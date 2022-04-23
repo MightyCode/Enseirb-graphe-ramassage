@@ -19,7 +19,7 @@ def return_template_obstacle() -> dict:
 def return_template_map() -> dict:
     return {
         "robot" : return_template_robot(),
-        "worldSize" : [100, 100],
+        "size" : [0, 0],
         "wastes" : [],
         "obstacles": []
     }
@@ -46,15 +46,15 @@ def handle_obstacle(line: str, map: dict):
     data:str = line.split(":")[1]
     
     positions:str = data.split(";")[0].replace(" ", "").replace("(", "").replace(")", "").replace("\n", "")
-    size:str = data.split(";")[1].replace(" ", "").replace("(", "").replace(")", "").replace("\n", "")
+    positions2:str = data.split(";")[1].replace(" ", "").replace("(", "").replace(")", "").replace("\n", "")
   
     parts = positions.split(",")
 
     obstacle["position"] = [int(parts[0]), int(parts[1])]
 
-    parts = size.split(",")
+    parts = positions2.split(",")
 
-    obstacle["size"] = [int(parts[0]), int(parts[1])]
+    obstacle["size"] = [int(parts[0]) - obstacle["position"][0], int(parts[1]) - obstacle["position"][1]]
 
     map["obstacles"].append(obstacle)
 
@@ -72,7 +72,9 @@ def read_line(line: str, map: dict):
         handle_obstacle(line, map)
     
 
-def load_map(path: str) -> dict:
+def load_map(path: str, map_size=None) -> dict:
+    print(path, map_size)
+
     result: dict = return_template_map()
 
     file = open(path, 'r')
@@ -80,5 +82,23 @@ def load_map(path: str) -> dict:
 
     for line in lines:
         read_line(line, result)
+
+    # Compute by hand map size
+    if type(map_size) == list and len(map_size) == 2:
+        result["size"] = map_size
+    else:
+        max = [0, 0]
+
+        for waste in result["wastes"]:
+            for i in range(2):
+                print(waste["position"][i])
+                if waste["position"][i] > max[i]:
+                    max[i] = waste["position"][i]
+
+        for i in range(2):
+            if result["robot"]["position"][i] > max[i]:
+                max[i] = result["robot"]["position"][i]
+
+        result["size"] = [max[0] + 2, max[1] + 2]
 
     return result
