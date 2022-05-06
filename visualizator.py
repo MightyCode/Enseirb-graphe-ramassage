@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-def display_map(map: dict) -> None:
+def display_map(map: dict, graph: list={}) -> None:
     plt.xlim(0, map["size"][0])
     plt.ylim(0, map["size"][1])
 
