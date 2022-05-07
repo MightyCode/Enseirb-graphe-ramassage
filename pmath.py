@@ -42,7 +42,7 @@ def computeRectangleCorner(obstacle: dict, chosenCorner: int):
 
 def getPosition(map: dict, vertex: int) -> list:
   if vertex < len(map["wastes"]):
-    return copy.copy(map["wastes"][vertex])
+    return copy.copy(map["wastes"][vertex]["position"])
   
   start: int = vertex - len(map["wastes"])
 

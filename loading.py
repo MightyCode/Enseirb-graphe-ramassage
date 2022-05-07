@@ -73,8 +73,6 @@ def read_line(line: str, map: dict):
     
 
 def load_map(path: str, map_size=None) -> dict:
-    print(path, map_size)
-
     result: dict = return_template_map()
 
     file = open(path, 'r')
@@ -91,7 +89,6 @@ def load_map(path: str, map_size=None) -> dict:
 
         for waste in result["wastes"]:
             for i in range(2):
-                print(waste["position"][i])
                 if waste["position"][i] > max[i]:
                     max[i] = waste["position"][i]
 

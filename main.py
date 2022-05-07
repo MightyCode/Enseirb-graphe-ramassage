@@ -27,9 +27,8 @@ def main():
 
         map = generate.createAndGenerateMap(args.size, args.random[0])
 
-    print(loading.create_graph(map))
-
-    visualizator.display_map(map)
+    # Change from complete graph to our path graph
+    visualizator.display_map(map, loading.create_graph(map))
 
     print(map)
 
