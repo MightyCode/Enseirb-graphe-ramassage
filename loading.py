@@ -1,3 +1,5 @@
+import pmath
+
 def return_template_robot() -> dict:
     return {
         "position" : [0, 0],
@@ -100,15 +102,32 @@ def load_map(path: str, map_size=None) -> dict:
 
     return result
 
+def line_colline_obstacle(obstacles: list, line: list) -> bool:     
+    for obstacle in obstacles:
+        if pmath.rectangleCollidesLine(
+                    line,
+                    [obstacle["position"][0], obstacle["position"][1],
+                    obstacle["position"][0] + obstacle["size"][0], obstacle["position"][1] + obstacle["size"][1]]):
+            return True
+    
+    return False
 
 def create_graph(map: dict) -> list:
     result: list = []
 
-    for i in range(len(map["wastes"])):
+    for i in range(len(map["wastes"]) + len(map["obstacles"]) * 4):
         result.append([])
 
-        for j in range(len(map["wastes"])):
-            if i != j:
-                result[i].append(j)
+        position1 = pmath.getPosition(map, i)
+        for j in range(len(map["wastes"]) + len(map["obstacles"]) * 4):
+            if i == j:
+                continue
+
+            position2 = pmath.getPosition(map, j)
+            
+            if line_colline_obstacle(map["obstacles"], [position1[0], position1[1], position2[0], position2[1]]):
+                continue
+
+            result[i].append(j)
 
     return result
