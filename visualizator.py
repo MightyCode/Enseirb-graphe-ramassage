@@ -1,5 +1,6 @@
 from turtle import pos
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 import pmath
 
 def display_map(map: dict, graph: list=[], offset=5) -> None:
@@ -22,20 +23,27 @@ def display_map(map: dict, graph: list=[], offset=5) -> None:
 
     ax = plt.subplot()
 
+    
+    for obstacle in map["obstacles"]:
+        rect = mpatches.Rectangle((obstacle["position"][0], obstacle["position"][1]), 
+            obstacle["size"][0], obstacle["size"][1], alpha=0.6, facecolor="red")
+
+        plt.gca().add_patch(rect)
+
     for i in range(len(graph)):
-        for j in graph[i]:
-            print([position[i][0], position[j][0]], [position[j][0], position[j][1]])
-            plt.plot([position[i][0], position[j][0]], [position[j][0], position[j][1]], color="blue")
+        for j in range(len(graph[i])):
+            index:int = graph[i][j]
+            if index > i:
+                plt.plot([position[i][0], position[index][0]], [position[i][1], position[index][1]], color="blue")
 
     i: int = 1
     for waste in map["wastes"]:
-        plt.plot(waste["position"][0], waste["position"][1], marker="o", markersize=3, markeredgecolor="black", markerfacecolor="green")
         ax.annotate(str(i), (waste["position"][0], waste["position"][1]))
 
         i += 1
-
     
     plt.plot(map["robot"]["position"][0], map["robot"]["position"][1], marker="o", markersize=5, markeredgecolor="black", markerfacecolor="red")
 
     plt.grid()
     plt.show()
+    plt.close()
