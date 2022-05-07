@@ -19,7 +19,7 @@ def display_map(map: dict, graph: list=[], offset=5) -> None:
                 max[j] = position[i][j]
 
     plt.xlim(min[0] - offset, max[0] + offset)
-    plt.ylim(min[1] - offset, max[0] + offset)
+    plt.ylim(min[1] - offset, max[1] + offset)
 
     ax = plt.subplot()
 
