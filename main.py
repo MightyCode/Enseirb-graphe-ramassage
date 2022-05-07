@@ -27,6 +27,8 @@ def main():
 
         map = generate.createAndGenerateMap(args.size, args.random[0])
 
+    print(loading.create_graph(map))
+
     visualizator.display_map(map)
 
     print(map)

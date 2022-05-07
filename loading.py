@@ -102,3 +102,16 @@ def load_map(path: str, map_size=None) -> dict:
         result["size"] = [max[0] + 2, max[1] + 2]
 
     return result
+
+
+def create_graph(map: dict) -> list:
+    result: list = []
+
+    for i in range(len(map["wastes"])):
+        result.append([])
+
+        for j in range(len(map["wastes"])):
+            if i != j:
+                result[i].append(j)
+
+    return result
