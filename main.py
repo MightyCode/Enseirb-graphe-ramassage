@@ -49,10 +49,10 @@ def main():
     if algorithm == 1:
         position: list = []
 
-        for i in range(len(almost_complete_graph)):
+        for i in range(1, len(almost_complete_graph)):
             position.append(pmath.getPosition(map, i))
         
-        result = commerce.optimisation(np.array(position), almost_complete_graph)
+        result = commerce.optimisation(np.array(position), almost_complete_graph[1:])
         print(result)
 
     visualizator.display_map(map, result)

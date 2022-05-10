@@ -66,10 +66,10 @@ def optimisation(points, graph) -> list:
     dist = None
     best = None
 
-    for p in permutations(range(1, len(graph))):
+    for p in permutations(range(len(graph))):
         if not possible(p, graph):
             continue
-
+        
         d = distance_chemin(points, p)
         if dist == None or d < dist:
             #print(d)
@@ -79,16 +79,20 @@ def optimisation(points, graph) -> list:
     if best == None:
         return []
 
+
     result: list = []
-    for i in range(graph):
+    for i in range(len(graph) + 1):
         result.append([])
 
     # Start connected to first vertex and last    
-    result[0].append(best[0])
-    result[0].append(best[-1])
+    result[0].append(best[0] + 1)
+    result[0].append(best[-1] + 1)
+    result[best[0] + 1].append(0)
+    result[best[-1] + 1].append(0)
 
     for i in range(len(best) - 1):
-        result[best[i].append(best[i + 1])]
+        result[best[i] + 1].append(best[i + 1] + 1)
+        result[best[i + 1] + 1].append(best[i] + 1)
     
     return result
 
