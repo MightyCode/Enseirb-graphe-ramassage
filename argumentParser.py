@@ -26,7 +26,7 @@ def giveArgsAndParser():
                         metavar="algorithm",
                         help="Choose the algorithm which will solve the problem: 1 - Brute force, 2 - N^2")
 
-    parser.add_argument("-c", "--speed", nargs=1, type=int,
+    parser.add_argument("-c", "--speed", nargs=1, type=float,
                        metavar=('speed'),
                        help="Set the rotation speed of the robot in radian.")
 

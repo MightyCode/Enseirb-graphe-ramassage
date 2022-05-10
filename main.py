@@ -30,8 +30,10 @@ def main():
 
         map = generate.createAndGenerateMap(args.size, args.random[0])
     
+    if args.speed:
+        map["robot"]["speedAngle"] = args.speed[0]
+
     almost_complete_graph: list = loading.create_graph(map)
-    print(almost_complete_graph)
 
     # Change from complete graph to our path graph
     visualizator.display_map(map, almost_complete_graph)
