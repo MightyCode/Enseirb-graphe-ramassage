@@ -115,11 +115,11 @@ def line_colline_obstacle(obstacles: list, line: list) -> bool:
 def create_graph(map: dict) -> list:
     result: list = []
 
-    for i in range(len(map["wastes"]) + len(map["obstacles"]) * 4):
+    for i in range(pmath.getNumberVertex(map)):
         result.append([])
 
         position1 = pmath.getPosition(map, i)
-        for j in range(len(map["wastes"]) + len(map["obstacles"]) * 4):
+        for j in range(pmath.getNumberVertex(map)):
             if i == j:
                 continue
 

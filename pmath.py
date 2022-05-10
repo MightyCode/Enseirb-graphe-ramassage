@@ -61,11 +61,18 @@ def computeRectangleCorner(obstacle: dict, chosenCorner: int):
     if chosenCorner == 3:
         return [obstacle["position"][0] - 0.001, obstacle["position"][1] + obstacle["size"][1] + 0.001]
 
+def getNumberVertex(map: dict):
+    return len(map["wastes"]) + 1 + 4 * len(map["obstacles"])
 
 def getPosition(map: dict, vertex: int) -> list:
-  if vertex < len(map["wastes"]):
-    return copy.copy(map["wastes"][vertex]["position"])
-  
-  start: int = vertex - len(map["wastes"])
+    if vertex == 0:
+        return map["robot"]["position"]
 
-  return computeRectangleCorner(map["obstacles"][start // 4], start % 4)
+    vertex -= 1
+
+    if vertex < len(map["wastes"]):
+        return copy.copy(map["wastes"][vertex]["position"])
+  
+    start: int = vertex - len(map["wastes"])
+
+    return computeRectangleCorner(map["obstacles"][start // 4], start % 4)
