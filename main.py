@@ -14,7 +14,8 @@ def main():
         return
 
     if args.seed:
-        random.seed(args.seed)
+        print(args.seed[0])
+        random.seed(args.seed[0])
 
     map: dict
     if args.path:

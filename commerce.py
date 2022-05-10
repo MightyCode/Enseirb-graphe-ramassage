@@ -68,8 +68,8 @@ def optimisation(points, chemin):
             best = p
     return best
 
-
-#res = optimisation(points, list(range(points.shape[0])))
-res = optimisation(points, list(range(points.shape[0])))
-plot_points(points, res);
+if __name__ == "__main__":
+    #res = optimisation(points, list(range(points.shape[0])))
+    res = optimisation(points, list(range(points.shape[0])))
+    plot_points(points, res)
 
