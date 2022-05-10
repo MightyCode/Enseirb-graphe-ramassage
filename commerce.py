@@ -79,11 +79,17 @@ def optimisation(points, graph) -> list:
     if best == None:
         return []
 
-    result: list = [[] * len(graph) + 1]
-    for i in best:
-        
-    
+    result: list = []
+    for i in range(graph):
+        result.append([])
 
+    # Start connected to first vertex and last    
+    result[0].append(best[0])
+    result[0].append(best[-1])
+
+    for i in range(len(best) - 1):
+        result[best[i].append(best[i + 1])]
+    
     return result
 
 if __name__ == "__main__":
