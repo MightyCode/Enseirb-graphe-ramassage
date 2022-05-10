@@ -13,9 +13,6 @@ from math import sqrt,acos,pi
 def Sqr(a):
     return a*a
 
-points = np.array([[0,0],[0,12],[10,4],[10,8],[20,8],[20,4],[30,12],[30,0]])
-#points = numpy.random.random((6, 2))
-
 
 def dist(p1, p2):
     return ((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2) ** 0.5
@@ -69,6 +66,9 @@ def optimisation(points, chemin):
     return best
 
 if __name__ == "__main__":
+    points = np.array([[0,0],[0,12],[10,4],[10,8],[20,8],[20,4],[30,12],[30,0]])
+    #points = numpy.random.random((6, 2))
+    print(list(range(points.shape[0])))
     #res = optimisation(points, list(range(points.shape[0])))
     res = optimisation(points, list(range(points.shape[0])))
     plot_points(points, res)

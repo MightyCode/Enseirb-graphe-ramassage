@@ -2,6 +2,8 @@ import generate
 import loading
 import visualizator
 import argumentParser as ag 
+import commerce
+import pmath
 
 import random
 
@@ -27,11 +29,34 @@ def main():
             return 
 
         map = generate.createAndGenerateMap(args.size, args.random[0])
+    
+    almost_complete_graph: list = loading.create_graph(map)
+    print(almost_complete_graph)
 
     # Change from complete graph to our path graph
-    visualizator.display_map(map, loading.create_graph(map))
+    visualizator.display_map(map, almost_complete_graph)
 
-    print(map)
+    algorithm: int = 1
+    if args.algorithm:
+        algorithm = args.algorithm[0]
+        if algorithm < 0 or algorithm > 2:
+            print("Algorithm index invalide, please choose between 1 and 2 (included)")
+            return 
+
+    result: list = []
+
+
+    if algorithm == 1:
+        position: list = []
+
+        for i in range(len(almost_complete_graph)):
+            position.append(pmath.getPosition(map, i))
+
+        print(position)
+
+        result = commerce.optimisation(position, almost_complete_graph)
+
+    visualizator.display_map(map, result)
 
 if __name__ == "__main__":
     main()

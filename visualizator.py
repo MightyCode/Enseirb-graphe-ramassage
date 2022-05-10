@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import pmath
 
-def display_map(map: dict, graph: list=[], offset=5) -> None:
+def display_map(map: dict, graph: list=[]) -> None:
     min: list = [None, None]
     max: list = [None, None]
 
@@ -16,9 +16,11 @@ def display_map(map: dict, graph: list=[], offset=5) -> None:
             
             if max[j] == None or max[j] < position[i][j]:
                 max[j] = position[i][j]
+    
+    size: list = [max[0] - min[0], max[1] - min[0]]
 
-    plt.xlim(min[0] - offset, max[0] + offset)
-    plt.ylim(min[1] - offset, max[1] + offset)
+    plt.xlim(min[0] - size[0] * 0.1, max[0] + size[0] * 0.1)
+    plt.ylim(min[1] - size[1] * 0.1, max[1] + size[1] * 0.1)
 
     ax = plt.subplot()
 
