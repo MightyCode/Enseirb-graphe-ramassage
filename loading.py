@@ -3,7 +3,8 @@ import pmath
 def return_template_robot() -> dict:
     return {
         "position" : [0, 0],
-        "angle" : 0
+        "angle" : [0, 1],
+        "speedAngle" : 2
     }
 
 
