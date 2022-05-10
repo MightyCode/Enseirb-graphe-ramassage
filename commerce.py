@@ -34,13 +34,15 @@ def angle2(p1, p2, p3):
     return acos(b)
 
 def angle_depart(start, p3):
+    print(p3)
     angle = start["angle"]
     pos = start["position"]
-    print(angle[0] * pos[0]-p3[0])
-    b = (angle[0] * (pos[0] - p3[0]) 
-    + angle[1] * (pos[1] - p3[1])) / (sqrt(angle[0] ** 2 
+    if pos[0] == p3[0] and pos[1] == p3[1]:
+        return 0
+    b= (angle[0] * (pos[0] - p3[0]) 
+    + angle[1] * (pos[1] - p3[1])) /sqrt(angle[0] ** 2 
     + angle[1] ** 2) * sqrt((pos[0] - p3[0]) ** 2 
-    + (pos[1] - p3[1]) ** 2))
+    + (pos[1] - p3[1]) ** 2)
     if (b>1):
         b=1
     if (b<-1):
@@ -49,6 +51,7 @@ def angle_depart(start, p3):
 
 def distance_chemin(start, points, chemin):
     d = 0
+    print(chemin)
     for i in range(1, len(points)-1):
         d += dist(points[chemin[i-1], :], points[chemin[i], :]) + angle2(points[chemin[i-1], :], points[chemin[i], :], 
                 points[chemin[i+1], :])*start["speedAngle"]
