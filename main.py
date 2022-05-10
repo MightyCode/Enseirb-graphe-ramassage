@@ -6,7 +6,7 @@ import commerce
 import pmath
 
 import random
-
+import numpy as np
 
 def main():
     args, parser = ag.giveArgsAndParser()
@@ -51,10 +51,9 @@ def main():
 
         for i in range(len(almost_complete_graph)):
             position.append(pmath.getPosition(map, i))
-
-        print(position)
-
-        result = commerce.optimisation(position, almost_complete_graph)
+        
+        result = commerce.optimisation(np.array(position), almost_complete_graph)
+        print(result)
 
     visualizator.display_map(map, result)
 

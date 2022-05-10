@@ -8,7 +8,7 @@ Created on Sat May  7 15:40:24 2022
 import numpy as np
 import matplotlib.pyplot as plt
 from itertools import permutations
-from math import sqrt,acos,pi
+from math import perm, sqrt,acos,pi
  
 def Sqr(a):
     return a*a
@@ -37,8 +37,10 @@ def distance_chemin(points, chemin):
     d = 0
     for i in range(1, len(points)-1):
         #print(angle2(points[chemin[i-1], :], points[chemin[i], :], points[chemin[i+1], :])*180/pi)
-        d += dist(points[chemin[i-1], :], points[chemin[i], :]) + angle2(points[chemin[i-1], :], points[chemin[i], :], points[chemin[i+1], :])*100
+        d += dist(points[chemin[i-1], :], points[chemin[i], :]) + angle2(points[chemin[i-1], :], points[chemin[i], :], 
+                points[chemin[i+1], :])*100
     d += dist(points[chemin[0], :], points[chemin[-1], :]) + dist(points[chemin[-2], :], points[chemin[-1], :])
+
     return d
 
 
@@ -53,23 +55,50 @@ def plot_points(points, chemin):
     ax[1].set_title("dist=%1.2f" % distance_chemin(points, chemin))
     return ax
 
+def possible(permutation, graphe):
+    for i in range(len(permutation) - 1):
+        if permutation[i + 1] not in graphe[permutation[i]]:
+            return False
 
-def optimisation(points, chemin):
-    dist = distance_chemin(points, chemin)
-    best = chemin
-    for p in permutations(chemin):
+    return True
+
+def optimisation(points, graph) -> list:
+    dist = None
+    best = None
+
+    for p in permutations(range(1, len(graph))):
+        if not possible(p, graph):
+            continue
+
         d = distance_chemin(points, p)
-        if d < dist:
+        if dist == None or d < dist:
             #print(d)
             dist = d
             best = p
-    return best
+    
+    if best == None:
+        return []
+
+    result: list = [[] * len(graph) + 1]
+    for i in best:
+        
+    
+
+    return result
 
 if __name__ == "__main__":
     points = np.array([[0,0],[0,12],[10,4],[10,8],[20,8],[20,4],[30,12],[30,0]])
     #points = numpy.random.random((6, 2))
     print(list(range(points.shape[0])))
     #res = optimisation(points, list(range(points.shape[0])))
-    res = optimisation(points, list(range(points.shape[0])))
+
+    graph: list = []
+    for i in range(len(points)):
+        graph.append([])
+        for j in range(len(points)):
+            if i != j:
+                graph[-1].append(j)
+
+    res = optimisation(points, graph)
     plot_points(points, res)
 
