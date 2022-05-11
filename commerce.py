@@ -33,13 +33,31 @@ def angle2(p1, p2, p3):
         b=-1
     return acos(b)
 
-def distance_chemin(points, chemin):
+def angle_depart(start, p3):
+    print(p3)
+    angle = start["angle"]
+    pos = start["position"]
+    if pos[0] == p3[0] and pos[1] == p3[1]:
+        return 0
+    b= (angle[0] * (pos[0] - p3[0]) 
+    + angle[1] * (pos[1] - p3[1])) /sqrt(angle[0] ** 2 
+    + angle[1] ** 2) * sqrt((pos[0] - p3[0]) ** 2 
+    + (pos[1] - p3[1]) ** 2)
+    if (b>1):
+        b=1
+    if (b<-1):
+        b=-1
+    return acos(b)
+
+def distance_chemin(start, points, chemin):
     d = 0
+    print(chemin)
     for i in range(1, len(points)-1):
-        #print(angle2(points[chemin[i-1], :], points[chemin[i], :], points[chemin[i+1], :])*180/pi)
         d += dist(points[chemin[i-1], :], points[chemin[i], :]) + angle2(points[chemin[i-1], :], points[chemin[i], :], 
-                points[chemin[i+1], :])*100
-    d += dist(points[chemin[0], :], points[chemin[-1], :]) + dist(points[chemin[-2], :], points[chemin[-1], :])
+                points[chemin[i+1], :])*start["speedAngle"]
+    d += dist(start["position"],points[chemin[0], :]) + angle_depart(start , points[chemin[0], :])*start["speedAngle"]
+    + dist(start["position"], points[chemin[-1], :]) 
+    + dist(points[chemin[-2], :], points[chemin[-1], :])
 
     return d
 
@@ -70,7 +88,7 @@ def optimisation(points, graph) -> list:
         if not possible(p, graph):
             continue
         
-        d = distance_chemin(points, p)
+        d = distance_chemin(start, points, p)
         if dist == None or d < dist:
             #print(d)
             dist = d
@@ -99,7 +117,12 @@ def optimisation(points, graph) -> list:
 if __name__ == "__main__":
     points = np.array([[0,0],[0,12],[10,4],[10,8],[20,8],[20,4],[30,12],[30,0]])
     #points = numpy.random.random((6, 2))
-    print(list(range(points.shape[0])))
+    start: dict = {
+    "position" : np.array([0.0, 0.0]),
+    "angle" : np.array([0, 1]),
+    "speedAngle" : 0.5 #rad/s
+    }
+    #print(list(range(points.shape[0])))
     #res = optimisation(points, list(range(points.shape[0])))
 
     graph: list = []
@@ -110,5 +133,6 @@ if __name__ == "__main__":
                 graph[-1].append(j)
 
     res = optimisation(points, graph)
-    plot_points(points, res)
+    print(res)
+    #plot_points(points, res)
 
