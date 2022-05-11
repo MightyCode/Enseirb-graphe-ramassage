@@ -8,10 +8,11 @@ import random
 def calculateFirstPath(points : list) -> list:
     path : list = []
 
-    for i in range(len(points)):
+    for i in range(1,len(points)):
         path.append(i)
 
     random.shuffle(path)
+    path.insert(0,0)
     path.append(path[0])
     return path
 
@@ -45,12 +46,12 @@ def permuteTwoEdges(path, i1 : int, i2 : int):
     else:
         print("indexes are not between 0 and len(points)-2")
 
-def permuteAlgo(points : list, path : list, LIMIT : int = 10**6) -> tuple :
+def permuteAlgo(start : dict, points : list, path : list, LIMIT : int = 10**6) -> tuple :
     np_points = np.array(points)
     np_path = np.array(path)
 
     #initial length
-    pathLen : int = commerce.distance_chemin(np_points,np_path)
+    pathLen : int = commerce.distance_chemin(start,np_points,np_path)
 
     cmp : int = 0
     tmp_cmp : int = 0
@@ -61,7 +62,7 @@ def permuteAlgo(points : list, path : list, LIMIT : int = 10**6) -> tuple :
                 if(tmp_cmp <= LIMIT):
                     if(j >= i+2 or j <= i-2 ):
                         newPath = permuteTwoEdges(np_path,i,j)
-                        newPathLength: int = commerce.distance_chemin(np_points,newPath)
+                        newPathLength: int = commerce.distance_chemin(start,np_points,newPath)
                         if(newPathLength < pathLen):
                             tmp_cmp = tmp_cmp + 1
                             pathLen = newPathLength
@@ -77,14 +78,21 @@ def permuteAlgo(points : list, path : list, LIMIT : int = 10**6) -> tuple :
     return np_path.tolist(), pathLen, cmp
 
 
-points : list = [[1,2],[3,1],[6,5],[5,4],[5,8],[6,4],[5,2],[3,9]]  
-print("points :",points)
+if __name__ == "__main__":
+    points : list = [[0,0],[1,2],[3,1],[6,5],[5,4],[5,8],[6,4],[5,2],[3,9]]  
 
-path = calculateFirstPath(points)
-print("first path :",path)
+    start: dict = {
+        "position" : np.array([0.0, 0.0]),
+        "angle" : np.array([0, 1]),
+        "speedAngle" : 0.5 #rad/s
+    }
 
-print("final result :")
-res = permuteAlgo
-print("path :",permuteAlgo(points,path)[0])
-print("length of the path :",permuteAlgo(points,path)[1])
-print("number of permutations computed :",permuteAlgo(points,path)[2])
+    print("points :",points)
+
+    path = calculateFirstPath(points)
+    print("first path :",path)
+    res = permuteAlgo(start,points,path)
+    print("final result :")
+    print("path :",res[0])
+    print("length of the path :",res[1])
+    print("number of permutations computed :",res[2])
