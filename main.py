@@ -3,6 +3,7 @@ import loading
 import visualizator
 import argumentParser as ag 
 import commerce
+import permutations
 import pmath
 
 import random
@@ -36,6 +37,7 @@ def main():
     almost_complete_graph: list = loading.create_graph(map)
 
     # Change from complete graph to our path graph
+    #visualizator.display_map(map, [])
     visualizator.display_map(map, almost_complete_graph)
 
     algorithm: int = 1
@@ -46,16 +48,20 @@ def main():
             return 
 
     result: list = []
+    path: list = []
+    position: list = []
 
+    for i in range(1, len(almost_complete_graph)):
+        position.append(pmath.getPosition(map, i))
 
     if algorithm == 1:
-        position: list = []
+        path = commerce.optimisation(map["robot"], np.array(position), almost_complete_graph[1:])
+    if algorithm == 2:
+        position.insert(0, map["robot"]["position"])
+        path = permutations.permuteAlgo(map["robot"], position)[0]
+        print(path)
 
-        for i in range(1, len(almost_complete_graph)):
-            position.append(pmath.getPosition(map, i))
-        
-        result = commerce.optimisation(np.array(position), almost_complete_graph[1:])
-        print(result)
+    result = pmath.path_to_graph(len(almost_complete_graph), path)
 
     visualizator.display_map(map, result)
 

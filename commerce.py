@@ -24,7 +24,6 @@ def angle(p1, p2, p3):
     return acos(b)
 
 
-
 def angle2(p1, p2, p3):
     b = ((p1[0] - p2[0]) * (p2[0] - p3[0]) + (p1[1] - p2[1]) * (p2[1] - p3[1])) / (sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2) * sqrt((p2[0] - p3[0]) ** 2 + (p2[1] - p3[1]) ** 2))
     if (b>1):
@@ -34,7 +33,6 @@ def angle2(p1, p2, p3):
     return acos(b)
 
 def angle_depart(start, p3):
-    print(p3)
     angle = start["angle"]
     pos = start["position"]
     if pos[0] == p3[0] and pos[1] == p3[1]:
@@ -51,7 +49,6 @@ def angle_depart(start, p3):
 
 def distance_chemin(start, points, chemin):
     d = 0
-    print(chemin)
     for i in range(1, len(points)-1):
         d += dist(points[chemin[i-1], :], points[chemin[i], :]) + angle2(points[chemin[i-1], :], points[chemin[i], :], 
                 points[chemin[i+1], :])*start["speedAngle"]
@@ -80,7 +77,7 @@ def possible(permutation, graphe):
 
     return True
 
-def optimisation(points, graph) -> list:
+def optimisation(start, points, graph) -> list:
     dist = None
     best = None
 
@@ -97,22 +94,12 @@ def optimisation(points, graph) -> list:
     if best == None:
         return []
 
+    path: list = [0]
+    for i in best:
+        path.append(i + 1)
+    path.append(0)
 
-    result: list = []
-    for i in range(len(graph) + 1):
-        result.append([])
-
-    # Start connected to first vertex and last    
-    result[0].append(best[0] + 1)
-    result[0].append(best[-1] + 1)
-    result[best[0] + 1].append(0)
-    result[best[-1] + 1].append(0)
-
-    for i in range(len(best) - 1):
-        result[best[i] + 1].append(best[i + 1] + 1)
-        result[best[i + 1] + 1].append(best[i] + 1)
-    
-    return result
+    return path
 
 if __name__ == "__main__":
     points = np.array([[0,0],[0,12],[10,4],[10,8],[20,8],[20,4],[30,12],[30,0]])
@@ -133,6 +120,5 @@ if __name__ == "__main__":
                 graph[-1].append(j)
 
     res = optimisation(points, graph)
-    print(res)
     #plot_points(points, res)
 

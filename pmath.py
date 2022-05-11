@@ -76,3 +76,14 @@ def getPosition(map: dict, vertex: int) -> list:
     start: int = vertex - len(map["wastes"])
 
     return computeRectangleCorner(map["obstacles"][start // 4], start % 4)
+
+def path_to_graph(numberPoint, path):
+    result: list = []
+    for i in range(numberPoint):
+        result.append([])
+
+    for i in range(len(path) - 1):
+        result[path[i]].append(path[i + 1])
+        result[path[i + 1]].append(path[i])
+
+    return result
