@@ -46,9 +46,9 @@ def permuteTwoEdges(path, i1 : int, i2 : int):
     else:
         print("indexes are not between 0 and len(points)-2")
 
-def permuteAlgo(start : dict, points : list, path : list, LIMIT : int = 10**6) -> tuple :
+def permuteAlgo(start : dict, points : list, LIMIT : int = 10**6) -> tuple :
     np_points = np.array(points)
-    np_path = np.array(path)
+    np_path : list = np.array(calculateFirstPath(points))
 
     #initial length
     pathLen : int = commerce.distance_chemin(start,np_points,np_path)
@@ -91,7 +91,7 @@ if __name__ == "__main__":
 
     path = calculateFirstPath(points)
     print("first path :",path)
-    res = permuteAlgo(start,points,path)
+    res = permuteAlgo(start,points)
     print("final result :")
     print("path :",res[0])
     print("length of the path :",res[1])
