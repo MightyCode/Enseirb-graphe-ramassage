@@ -35,9 +35,12 @@ def main():
         map["robot"]["speedAngle"] = args.speed[0]
 
     almost_complete_graph: list = loading.create_graph(map)
+    empty_graph: list = []
+    for i in range(len(almost_complete_graph)):
+        empty_graph.append([])
 
     # Change from complete graph to our path graph
-    #visualizator.display_map(map, [])
+    visualizator.display_map(map, empty_graph)
     visualizator.display_map(map, almost_complete_graph)
 
     algorithm: int = 1
