@@ -2,7 +2,7 @@ import commerce
 
 def christophides(start: dict, graph: list, points: list, wastes_count: int) -> list:
     
-    spanning_tree = compute_minimum_spanning_tree(graph)
+    spanning_tree = compute_minimum_spanning_tree(graph, points)
 
     odd_graph = compute_odd_degree_graph(spanning_tree)
 
@@ -19,10 +19,14 @@ def christophides(start: dict, graph: list, points: list, wastes_count: int) -> 
 """
 def compute_minimum_spanning_tree(graph: list, points: list) -> list:
     result : list = []
-    for i in range(len(graph)):
-        result[i] = []
+    for _ in range(len(graph)):
+        result = result + [[]]
     neighbors : list = graph[0]
+    in_zone : list = [0]
     while len(neighbors) > 0:
+        #print("in_zone: " + str(in_zone)[1:-1] )
+        #print("result: " + str(result)[1:-1] )
+        #print("neighbors: " + str(neighbors)[1:-1] )
         min_distance = -1
         vSrc = 0
         vDst = 0
@@ -34,8 +38,15 @@ def compute_minimum_spanning_tree(graph: list, points: list) -> list:
                         min_distance = d
                         vSrc = v
                         vDst = n
-        result[v] = result[v] + [n]
-        neighbors[n] = graph[n]
+        result[vSrc] = result[vSrc] + [vDst]
+        result[vDst] = result[vDst] + [vSrc]
+        in_zone = in_zone + [vDst]
+        neighbors = neighbors + graph[n]
+        tmp_neighbors = []
+        for i in range(len(neighbors)):
+            if neighbors[i] not in tmp_neighbors and neighbors[i] not in in_zone:
+                tmp_neighbors = tmp_neighbors + [neighbors[i]]
+        neighbors = tmp_neighbors
     return result
 
 """
@@ -100,6 +111,6 @@ if __name__ == "__main__":
     # Test odd 
     points = [ [0,0], [0,1], [3,0], [0,-2] ]
 
-    #print(compute_minimum_spanning_tree([[1, 2, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2]], points))
+    print(compute_minimum_spanning_tree([[1, 2, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2]], points))
     print(compute_odd_degree_graph([[2], [2], [0, 1, 3, 4], [2], [2]]))
     print(remove_multiple_vertices([ 1, 2, 3, 1, 4, 5, 1 ]))
