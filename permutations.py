@@ -8,7 +8,7 @@ import random
 def calculateFirstPath(points : list) -> list:
     path : list = []
 
-    for i in range(1,len(points)):
+    for i in range(1, len(points)):
         path.append(i)
 
     random.shuffle(path)
@@ -56,7 +56,7 @@ def permuteAlgo(start : dict, points : list, LIMIT : int = 10**6) -> tuple :
     cmp : int = 0
     tmp_cmp : int = 0
     
-    while(1):
+    while True:
         for i in range(1, len(np_path)-2):
             for j in range(1, len(np_path)-2):
                 if(tmp_cmp <= LIMIT):
