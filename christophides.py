@@ -107,7 +107,8 @@ def eulerian_cycle(graph: list) -> list:
     def dfs(start: int, result: list):
         for c in graph[start]:
             if c not in explorated[start]:
-                explorated[start] = explorated[start] + [c]
+                explorated[start].insert(0, c)
+                explorated[c].insert(0, start)
                 dfs(c, result)
         result.insert(0, start)
 
@@ -129,13 +130,13 @@ def remove_multiple_vertices(cycle: list) -> list:
 
 
 if __name__ == "__main__":
-    #points = [ [0,0], [0,1], [3,0], [0,-2] ]
+    points = [ [0,0], [0,1], [3,0], [0,-2] ]
 
-    #print("Minimum Spanning Tree: ", compute_minimum_spanning_tree([[1, 2, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2]], points))
+    print("Minimum Spanning Tree: ", compute_minimum_spanning_tree([[1, 2, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2]], points))
     
-    #print("Odd degree: ", compute_odd_degree_graph([[2], [2], [0, 1, 3, 4], [2], [2]]))
+    print("Odd degree: ", compute_odd_degree_graph([[2], [2], [0, 1, 3, 4], [2], [2]]))
 
-    #print("Union vertices: ", union_graph([[1], [0], []], [[1, 2], [0], [0]]))
+    print("Union vertices: ", union_graph([[1], [0], []], [[1, 2], [0], [0]]))
 
     print("Eulerian Cycle: ", eulerian_cycle([[1, 2, 3, 4], [0, 2], [0, 1], [0, 4], [0, 3]]))
 
