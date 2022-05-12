@@ -1,3 +1,4 @@
+import zlib
 import generate
 import loading
 import visualizator
@@ -58,10 +59,18 @@ def main():
         position.append(pmath.getPosition(map, i))
 
     if algorithm == 1:
-        path = commerce.optimisation(map["robot"], np.array(position), almost_complete_graph, len(map["wastes"]))
+        path = commerce.optimisation(map["robot"], np.array(position), almost_complete_graph[1:], len(map["wastes"]))
+        print(path)
     if algorithm == 2:
-        position.insert(0, map["robot"]["position"])
-        path = permutations.permuteAlgo(map["robot"], position)[0]
+        path = permutations.permuteAlgo(map["robot"], position, almost_complete_graph[1:])[0]
+        
+        for i in range(len(path)):
+            path[i] += 1
+
+        path.insert(0, 0)
+        path.append(0)
+
+        print(path)
 
     result = pmath.path_to_graph(len(almost_complete_graph), path)
 

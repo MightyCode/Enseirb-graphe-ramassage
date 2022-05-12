@@ -120,13 +120,12 @@ def optimisation(start, points, graph, numberWastes) -> list:
     #Precaculs
     paths: dict = compute_paths(start, points, graph, numberWastes)
 
-    for p in permutations(range(numberWastes)):
-        completePath(p, paths)
+    for p in permutations(range(len(points))):
+        #completePath(p, paths)
 
         if not possible(p, graph):
             continue
         
-        print(start, points, p)
         d = distance_path_and_start(start, points, p)
         if dist == None or d < dist:
             #print(d)
@@ -139,7 +138,7 @@ def optimisation(start, points, graph, numberWastes) -> list:
     path: list = [0]
     for i in best:
         path.append(i + 1)
-        
+
     path.append(0)
 
     return path

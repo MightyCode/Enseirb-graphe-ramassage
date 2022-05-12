@@ -8,12 +8,10 @@ import random
 def calculateFirstPath(points : list) -> list:
     path : list = []
 
-    for i in range(1, len(points)):
+    for i in range(0, len(points)):
         path.append(i)
 
     random.shuffle(path)
-    path.insert(0,0)
-    path.append(path[0])
     return path
 
 # swap two points in a list : points[i] become points[j] and points[j] become points[j]
@@ -46,36 +44,34 @@ def permuteTwoEdges(path, i1 : int, i2 : int):
     else:
         print("indexes are not between 0 and len(points)-2")
 
-def permuteAlgo(start : dict, points : list, LIMIT : int = 10**6) -> tuple :
+def permuteAlgo(start : dict, points : list, graph: list, LIMIT : int = 10e6) -> tuple :
     np_points = np.array(points)
-    np_path : list = np.array(calculateFirstPath(points))
+    np_path : list = calculateFirstPath(points)
 
     #initial length
-    pathLen : int = commerce.distance_path_and_start(start,np_points,np_path)
+    pathLen : int = commerce.distance_path_and_start(start, np_points, np_path)
 
     cmp : int = 0
     tmp_cmp : int = 0
     
     while True:
-        for i in range(1, len(np_path)-2):
-            for j in range(1, len(np_path)-2):
+        for i in range(1, len(np_path) - 2):
+            for j in range(1, len(np_path) - 2):
                 if(tmp_cmp <= LIMIT):
-                    if(j >= i+2 or j <= i-2 ):
-                        newPath = permuteTwoEdges(np_path,i,j)
-                        newPathLength: int = commerce.distance_path_and_start(start,np_points,newPath)
-                        if(newPathLength < pathLen):
+                    if(j >= i + 2 or j <= i - 2):
+                        newPath = permuteTwoEdges(np_path, i, j)
+                        newPathLength: int = commerce.distance_path_and_start(start, np_points, newPath)
+
+                        if newPathLength < pathLen:
                             tmp_cmp = tmp_cmp + 1
                             pathLen = newPathLength
-                            np_path = np.array(newPath)
+                            np_path = newPath.copy()
                 else:
-                    return np_path.tolist(), pathLen, cmp
+                    return np_path, pathLen, cmp
         if(tmp_cmp == cmp):
-            return np_path.tolist(), pathLen, cmp
+            return np_path, pathLen, cmp
         else:
             cmp = tmp_cmp
-
-
-    return np_path.tolist(), pathLen, cmp
 
 
 if __name__ == "__main__":
