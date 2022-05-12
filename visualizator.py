@@ -1,8 +1,9 @@
+from os import name
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import pmath
 
-def display_map(map: dict, graph: list=[]) -> None:
+def display_map(map: dict, graph: list=[], name_plot="") -> None:
     min: list = [None, None]
     max: list = [None, None]
 
@@ -46,5 +47,6 @@ def display_map(map: dict, graph: list=[]) -> None:
     plt.plot(map["robot"]["position"][0], map["robot"]["position"][1], marker="o", markersize=5, markeredgecolor="black", markerfacecolor="red")
 
     plt.grid()
+    plt.title(name_plot)
     plt.show()
     plt.close()

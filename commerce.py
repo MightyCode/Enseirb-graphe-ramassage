@@ -1,9 +1,8 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 import numpy as np
 import matplotlib.pyplot as plt
 from itertools import permutations
 from math import sqrt,acos
+import time
  
 def Sqr(a):
     return a*a
@@ -112,58 +111,46 @@ def compute_paths(start: dict, points: list, graph: list, wastes_count: int) -> 
 
     return result
 
+def path_including_start(path: list) -> list:
+    result: list = [0]
+    for i in path:
+        result.append(i + 1)
+    result.append(0)
 
-def optimisation(start, points, graph, numberWastes) -> list:
+    return result
+
+def optimisation(start, points, graph, numberWastes, limit) -> list:
     dist = None
     best = None
 
     #Precaculs
-    paths: dict = compute_paths(start, points, graph, numberWastes)
+    graph_without_robot = graph[1:]
+    paths: dict = compute_paths(start, points, graph_without_robot, numberWastes)
+
+    start_time: int = int(round(time.time() * 1000))
 
     for p in permutations(range(len(points))):
         #completePath(p, paths)
 
-        if not possible(p, graph):
+        true_path = path_including_start(p)
+        if not possible(true_path, graph):
             continue
         
         d = distance_path_and_start(start, points, p)
         if dist == None or d < dist:
-            #print(d)
             dist = d
             best = p
+
+        if int(round(time.time() * 1000)) - start_time > limit:
+            print(int(round(time.time() * 1000)) - start_time)
+            break
     
     if best == None:
         return []
 
-    path: list = [0]
-    for i in best:
-        path.append(i + 1)
-
-    path.append(0)
-
-    return path
+    return path_including_start(best)
 
 if __name__ == "__main__":
-    points = np.array([[0,0],[0,12],[10,4],[10,8],[20,8],[20,4],[30,12],[30,0]])
-    #points = numpy.random.random((6, 2))
-    start: dict = {
-    "position" : np.array([0.0, 0.0]),
-    "angle" : np.array([0, 1]),
-    "speedAngle" : 0.5 #rad/s
-    }
-    #print(list(range(points.shape[0])))
-    #res = optimisation(points, list(range(points.shape[0])))
-
-    graph: list = []
-    for i in range(len(points)):
-        graph.append([])
-        for j in range(len(points)):
-            if i != j:
-                graph[-1].append(j)
-
-    res = optimisation(points, graph)
-    #plot_points(points, res)
-
     paths = [
         {
             1 : [],
@@ -185,4 +172,9 @@ if __name__ == "__main__":
     path = [0, 2, 1]
     completePath(path, paths)
     print(path)
+
+    graph = [[1], [0, 2], [1]]
+
+    print("Path possible : ", possible([0, 1, 2], graph))
+    print("Path impossible : ",possible([0, 2, 1], graph))
     

@@ -51,8 +51,8 @@ def main():
     total += current_time - start
 
     # Change from complete graph to our path graph
-    visualizator.display_map(map, empty_graph)
-    visualizator.display_map(map, almost_complete_graph)
+    visualizator.display_map(map, empty_graph, "Affichage des déchets sans liaisons")
+    visualizator.display_map(map, almost_complete_graph, "Affichage du graphe des chemins possibles")
     start = int(round(time.time() * 1000))
 
     algorithm: int = 1
@@ -69,11 +69,13 @@ def main():
     for i in range(1, len(almost_complete_graph)):
         position.append(pmath.getPosition(map, i))
 
+    print("Begin algo")
+
     if algorithm == 1:
-        path = commerce.optimisation(map["robot"], np.array(position), almost_complete_graph[1:], len(map["wastes"]))
-        print(path)
+        path = commerce.optimisation(map["robot"], np.array(position), almost_complete_graph, len(map["wastes"]), limit_time - total)
+
     if algorithm == 2:
-        path = permutations.permuteAlgo(map["robot"], position, almost_complete_graph[1:], limit_time - total)[0]
+        path = permutations.permuteAlgo(map["robot"], position, almost_complete_graph, limit_time - total)[0]
         
         for i in range(len(path)):
             path[i] += 1
@@ -83,11 +85,13 @@ def main():
 
         print(path)
 
+    print("Begin end")
+
     result = pmath.path_to_graph(len(almost_complete_graph), path)
 
     current_time: int = int(round(time.time() * 1000))
     total += current_time - start
-    visualizator.display_map(map, result)
+    visualizator.display_map(map, result, "Affichage du chemins possibles")
     start = int(round(time.time() * 1000))
 
     current_time: int = int(round(time.time() * 1000))
