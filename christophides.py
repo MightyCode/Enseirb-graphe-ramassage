@@ -38,6 +38,7 @@ def compute_minimum_spanning_tree(graph: list, points: list) -> list:
                         vDst = n
         result[v] = result[v] + [n]
         neighbors[n] = graph[n]
+        
     return result
 
 """
