@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from re import A
 import numpy as np
 import matplotlib.pyplot as plt
 from itertools import permutations
-from math import perm, sqrt,acos,pi
+from math import sqrt,acos
  
 def Sqr(a):
     return a*a
@@ -31,6 +30,7 @@ def angle2(p1, p2, p3):
 def angle_depart(start, p3):
     angle = start["angle"]
     pos = start["position"]
+
     if pos[0] == p3[0] and pos[1] == p3[1]:
         return 0
     b= (angle[0] * (pos[0] - p3[0]) 
@@ -41,6 +41,7 @@ def angle_depart(start, p3):
         b=1
     if (b<-1):
         b=-1
+
     return acos(b)
 
 def distance_between_two_points(start, points, path):
@@ -49,10 +50,12 @@ def distance_between_two_points(start, points, path):
         d += dist(points[path[i-1], :], points[path[i], :])
         d += angle2(points[path[i-1], :], points[path[i], :], points[path[i+1], :]) * start["speedAngle"]
 
+    return d
+
 def distance_path_and_start(start, points, path):
     d = distance_between_two_points(start, points, path)
 
-    d += dist(start["position"],points[path[0], :]) + angle_depart(start , points[path[0], :]) * start["speedAngle"]
+    d += dist(start["position"],points[path[0], :]) + angle_depart(start, points[path[0], :]) * start["speedAngle"]
     + dist(start["position"], points[path[-1], :]) 
     + dist(points[path[-2], :], points[path[-1], :])
 
@@ -92,7 +95,22 @@ def completePath(path, liaisons):
                 path.insert(i + 1, liaison[j])
 
         i += len(liaison) + 1
-        print(i)
+
+def compute_paths(start: dict, points: list, graph: list, wastes_count: int) -> list:
+    def find_best_path(src: int, dst: int) -> list:
+        result: list = []
+
+        return result
+
+    result: list = []
+
+    for i in range(wastes_count):
+        result.append({})
+        for j in range(wastes_count):
+            if i < j:
+                result[i][j] = find_best_path(i, j)
+
+    return result
 
 
 def optimisation(start, points, graph, numberWastes) -> list:
@@ -100,11 +118,15 @@ def optimisation(start, points, graph, numberWastes) -> list:
     best = None
 
     #Precaculs
-    paths: dict = [[]  * numberWastes]
+    paths: dict = compute_paths(start, points, graph, numberWastes)
 
     for p in permutations(range(numberWastes)):
-        p = completePath(p, paths)
+        completePath(p, paths)
+
+        if not possible(p, graph):
+            continue
         
+        print(start, points, p)
         d = distance_path_and_start(start, points, p)
         if dist == None or d < dist:
             #print(d)
@@ -117,6 +139,7 @@ def optimisation(start, points, graph, numberWastes) -> list:
     path: list = [0]
     for i in best:
         path.append(i + 1)
+        
     path.append(0)
 
     return path
