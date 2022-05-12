@@ -67,7 +67,7 @@ def plot_points(points, chemin):
 
     ax[0].plot(points[:, 0], points[:, 1], 'o')
     ax[1].plot(p[:, 0], p[:, 1], 'o-')
-    ax[1].set_title("dist=%1.2f" % distance_chemin(points, chemin))
+    ax[1].set_title("dist=%1.2f" % distance_path_and_start(points, chemin))
     return ax
 
 def possible(permutation, graphe):
@@ -105,7 +105,7 @@ def optimisation(start, points, graph, numberWastes) -> list:
     for p in permutations(range(numberWastes)):
         p = completePath(p, paths)
         
-        d = distance_chemin(start, points, p)
+        d = distance_path_and_start(start, points, p)
         if dist == None or d < dist:
             #print(d)
             dist = d
