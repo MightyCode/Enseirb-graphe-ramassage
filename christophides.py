@@ -47,6 +47,21 @@ def christophides(start: dict, graph: list, points: list, wastes_count: int) -> 
 """
 def compute_odd_degree_graph(graph: list) -> list:
     result : list = []
+
+    odd: list = []
+
+    for i in range(len(graph)):
+        if len(graph[i]) % 2 == 1:
+            odd.append(i)
+
+    for i in range(len(graph)):
+        result.append([])
+
+        if i in odd:
+            for j in odd:
+                if i != j:
+                    result[i].append(j)
+
     return result
 
 """
@@ -83,3 +98,8 @@ def remove_multiple_vertices(cycle: list) -> list:
         if cycle[i] not in result:
             result = result + [cycle[i]]
     return [cycle[0]] + result
+
+
+if __name__ == "__main__":
+    # Test odd 
+    print(compute_odd_degree_graph([[2], [2], [0, 1, 3, 4], [2], [2]]))

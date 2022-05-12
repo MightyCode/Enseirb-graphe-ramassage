@@ -8,7 +8,7 @@ import random
 def calculateFirstPath(points : list) -> list:
     path : list = []
 
-    for i in range(1,len(points)):
+    for i in range(1, len(points)):
         path.append(i)
 
     random.shuffle(path)
@@ -51,18 +51,18 @@ def permuteAlgo(start : dict, points : list, LIMIT : int = 10**6) -> tuple :
     np_path : list = np.array(calculateFirstPath(points))
 
     #initial length
-    pathLen : int = commerce.distance_chemin(start,np_points,np_path)
+    pathLen : int = commerce.distance_path_and_start(start,np_points,np_path)
 
     cmp : int = 0
     tmp_cmp : int = 0
     
-    while(1):
-        for i in range(1,len(np_path)-2):
-            for j in range(1,len(np_path)-2):
+    while True:
+        for i in range(1, len(np_path)-2):
+            for j in range(1, len(np_path)-2):
                 if(tmp_cmp <= LIMIT):
                     if(j >= i+2 or j <= i-2 ):
                         newPath = permuteTwoEdges(np_path,i,j)
-                        newPathLength: int = commerce.distance_chemin(start,np_points,newPath)
+                        newPathLength: int = commerce.distance_path_and_start(start,np_points,newPath)
                         if(newPathLength < pathLen):
                             tmp_cmp = tmp_cmp + 1
                             pathLen = newPathLength
