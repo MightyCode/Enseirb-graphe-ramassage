@@ -58,11 +58,10 @@ def main():
         position.append(pmath.getPosition(map, i))
 
     if algorithm == 1:
-        path = commerce.optimisation(map["robot"], np.array(position), almost_complete_graph[1:])
+        path = commerce.optimisation(map["robot"], np.array(position), almost_complete_graph, len(map["wastes"]))
     if algorithm == 2:
         position.insert(0, map["robot"]["position"])
         path = permutations.permuteAlgo(map["robot"], position)[0]
-        print(path)
 
     result = pmath.path_to_graph(len(almost_complete_graph), path)
 

@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Sat May  7 15:40:24 2022
-
-@author: facen
-"""
+from re import A
 import numpy as np
 import matplotlib.pyplot as plt
 from itertools import permutations
@@ -47,6 +43,9 @@ def angle_depart(start, p3):
         b=-1
     return acos(b)
 
+def distance_between_two_points():
+    pass
+
 def distance_chemin(start, points, chemin):
     d = 0
     for i in range(1, len(points)-1):
@@ -77,13 +76,33 @@ def possible(permutation, graphe):
 
     return True
 
-def optimisation(start, points, graph) -> list:
+def completePath(path, liaisons):
+    i: int = 0
+    while i < len(path) - 1:
+        n1 = path[i]
+        n2 = path[i + 1]
+
+        liaison: list = liaisons[n1 if n1 < n2 else n2][n2 if n2 > n1 else n1]
+        if n1 > n2:
+            for j in range(len(liaison)):
+                path.insert(i + 1, liaison[j])
+        else:
+            for j in range(len(liaison) -1, -1, -1):
+                path.insert(i + 1, liaison[j])
+
+        i += len(liaison) + 1
+        print(i)
+
+
+def optimisation(start, points, graph, numberWastes) -> list:
     dist = None
     best = None
 
-    for p in permutations(range(len(graph))):
-        if not possible(p, graph):
-            continue
+    #Precaculs
+    paths: dict = [[]  * numberWastes]
+
+    for p in permutations(range(numberWastes)):
+        p = completePath(p, paths)
         
         d = distance_chemin(start, points, p)
         if dist == None or d < dist:
@@ -122,3 +141,25 @@ if __name__ == "__main__":
     res = optimisation(points, graph)
     #plot_points(points, res)
 
+    paths = [
+        {
+            1 : [],
+            2 : [4, 5],
+            3 : [5]
+        },
+        {
+            0 : [],
+            2 : [4, 5],
+            3 : [5]
+        },
+        {
+            0 : [18],
+            1 : [4, 5],
+            3 : [5]
+        },
+    ]
+
+    path = [0, 2, 1]
+    completePath(path, paths)
+    print(path)
+    
