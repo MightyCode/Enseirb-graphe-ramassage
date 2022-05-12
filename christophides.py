@@ -1,6 +1,5 @@
+from os import stat
 import commerce
-import copy
-
 
 def christophides(start: dict, graph: list, points: list, wastes_count: int) -> list:
     
@@ -99,8 +98,21 @@ def union_graph(graph1: list, graph2: list) -> list:
 
     @return Cycle such as : [ 1, 2, 3, 1, 4, 5, 1 ]
 """
-def eulerian_cycle(graph) -> list:
+def eulerian_cycle(graph: list) -> list:
     result : list = []
+    explorated : list = []
+    for _ in range(len(graph)):
+        explorated = explorated + [[]]
+
+    def dfs(start: int, result: list):
+        for c in graph[start]:
+            if c not in explorated[start]:
+                explorated[start] = explorated[start] + [c]
+                dfs(c, result)
+        result.insert(0, start)
+
+    dfs(0, result)
+
     return result
 
 """
@@ -117,13 +129,14 @@ def remove_multiple_vertices(cycle: list) -> list:
 
 
 if __name__ == "__main__":
-    # Test odd 
-    points = [ [0,0], [0,1], [3,0], [0,-2] ]
+    #points = [ [0,0], [0,1], [3,0], [0,-2] ]
 
-    print("Minimum Spanning Tree: ", compute_minimum_spanning_tree([[1, 2, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2]], points))
+    #print("Minimum Spanning Tree: ", compute_minimum_spanning_tree([[1, 2, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2]], points))
     
-    print("Odd degree: ", compute_odd_degree_graph([[2], [2], [0, 1, 3, 4], [2], [2]]))
+    #print("Odd degree: ", compute_odd_degree_graph([[2], [2], [0, 1, 3, 4], [2], [2]]))
 
-    print("Union vertices: ", union_graph([[1], [0], []], [[1, 2], [0], [0]]))
+    #print("Union vertices: ", union_graph([[1], [0], []], [[1, 2], [0], [0]]))
 
-    print("Multiple vertices: ", remove_multiple_vertices([ 1, 2, 3, 1, 4, 5, 1 ]))
+    print("Eulerian Cycle: ", eulerian_cycle([[1, 2, 3, 4], [0, 2], [0, 1], [0, 4], [0, 3]]))
+
+    print("Multiple vertices: ", remove_multiple_vertices(eulerian_cycle([[1, 2, 3, 4], [0, 2], [0, 1], [0, 4], [0, 3]])))
