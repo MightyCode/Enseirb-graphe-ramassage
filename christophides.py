@@ -1,32 +1,6 @@
 import commerce
 
 def christophides(start: dict, graph: list, points: list, wastes_count: int) -> list:
-    """
-        @return Graph
-    """
-    def compute_minimum_spanning_tree(graph: list) -> list:
-        result : list = []
-        for i in range(len(graph)):
-            result[i] = []
-
-        neighbors : list = graph[0]
-
-        while len(neighbors) > 0:
-            min_distance = -1
-            vSrc = 0
-            vDst = 0
-            for n in neighbors:
-                for v in range(len(result)):
-                    if n in graph[v]:
-                        d = commerce.dist(points[v], points[n])
-                        if min_distance == -1 or min_distance > d:
-                            min_distance = d
-                            vSrc = v
-                            vDst = n
-            result[v] = result[v] + [n]
-            neighbors[n] = graph[n]
-
-        return result
     
     spanning_tree = compute_minimum_spanning_tree(graph)
 
@@ -40,7 +14,29 @@ def christophides(start: dict, graph: list, points: list, wastes_count: int) -> 
 
     return remove_multiple_vertices(cycle)
 
-
+"""
+    @return Graph
+"""
+def compute_minimum_spanning_tree(graph: list, points: list) -> list:
+    result : list = []
+    for i in range(len(graph)):
+        result[i] = []
+    neighbors : list = graph[0]
+    while len(neighbors) > 0:
+        min_distance = -1
+        vSrc = 0
+        vDst = 0
+        for n in neighbors:
+            for v in range(len(result)):
+                if n in graph[v]:
+                    d = commerce.dist(points[v], points[n])
+                    if min_distance == -1 or min_distance > d:
+                        min_distance = d
+                        vSrc = v
+                        vDst = n
+        result[v] = result[v] + [n]
+        neighbors[n] = graph[n]
+    return result
 
 """
     @return Graph
@@ -102,5 +98,8 @@ def remove_multiple_vertices(cycle: list) -> list:
 
 if __name__ == "__main__":
     # Test odd 
+    points = [ [0,0], [0,1], [3,0], [0,-2] ]
+
+    #print(compute_minimum_spanning_tree([[1, 2, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2]], points))
     print(compute_odd_degree_graph([[2], [2], [0, 1, 3, 4], [2], [2]]))
     print(remove_multiple_vertices([ 1, 2, 3, 1, 4, 5, 1 ]))
