@@ -16,7 +16,7 @@ def christophides(start: dict, graph: list, points: list, wastes_count: int) -> 
 """
 def compute_minimum_spanning_tree(graph: list) -> list:
     result : list = []
-    
+
     return result
 
 """
@@ -56,4 +56,7 @@ def eulerian_cycle(graph) -> list:
 """
 def remove_multiple_vertices(cycle: list) -> list:
     result : list = []
-    return result
+    for i in range(1, len(cycle)):
+        if cycle[i] not in result:
+            result = result + [cycle[i]]
+    return [cycle[0]] + result
