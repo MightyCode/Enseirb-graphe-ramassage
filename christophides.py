@@ -1,4 +1,6 @@
 import commerce
+import copy
+
 
 def christophides(start: dict, graph: list, points: list, wastes_count: int) -> list:
     
@@ -72,6 +74,13 @@ def compute_minimal_coupling_graph(graph: list) -> list:
 """
 def union_graph(graph1: list, graph2: list) -> list:
     result : list = []
+
+    for i in range(len(graph1)):
+        result.append(graph1[i].copy())
+        result[i].extend(graph2[i].copy())
+        result[i] = list(set(result[i]))
+        result[i].sort()
+
     return result
 
 """
@@ -101,5 +110,8 @@ if __name__ == "__main__":
     points = [ [0,0], [0,1], [3,0], [0,-2] ]
 
     #print(compute_minimum_spanning_tree([[1, 2, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2]], points))
-    print(compute_odd_degree_graph([[2], [2], [0, 1, 3, 4], [2], [2]]))
-    print(remove_multiple_vertices([ 1, 2, 3, 1, 4, 5, 1 ]))
+    print("Odd degree: ", compute_odd_degree_graph([[2], [2], [0, 1, 3, 4], [2], [2]]))
+
+    print("Union vertices: ", union_graph([[1], [0], []], [[1, 2], [0], [0]]))
+
+    print("Multiple vertices: ", remove_multiple_vertices([ 1, 2, 3, 1, 4, 5, 1 ]))
