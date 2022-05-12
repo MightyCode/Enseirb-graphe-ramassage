@@ -1,4 +1,3 @@
-import zlib
 import generate
 import loading
 import visualizator
@@ -9,8 +8,15 @@ import pmath
 
 import random
 import numpy as np
+import time
 
 def main():
+    start: int = int(round(time.time() * 1000))
+    total: int = 0
+    current_time: int = 0  
+
+    limit_time = 5 * 60 * 1000
+
     args, parser = ag.giveArgsAndParser()
 
     if not args.path and not args.random:
@@ -40,9 +46,14 @@ def main():
     for i in range(len(almost_complete_graph)):
         empty_graph.append([])
 
+    
+    current_time: int = int(round(time.time() * 1000))
+    total += current_time - start
+
     # Change from complete graph to our path graph
     visualizator.display_map(map, empty_graph)
     visualizator.display_map(map, almost_complete_graph)
+    start = int(round(time.time() * 1000))
 
     algorithm: int = 1
     if args.algorithm:
@@ -62,7 +73,7 @@ def main():
         path = commerce.optimisation(map["robot"], np.array(position), almost_complete_graph[1:], len(map["wastes"]))
         print(path)
     if algorithm == 2:
-        path = permutations.permuteAlgo(map["robot"], position, almost_complete_graph[1:])[0]
+        path = permutations.permuteAlgo(map["robot"], position, almost_complete_graph[1:], limit_time - total)[0]
         
         for i in range(len(path)):
             path[i] += 1
@@ -74,7 +85,15 @@ def main():
 
     result = pmath.path_to_graph(len(almost_complete_graph), path)
 
+    current_time: int = int(round(time.time() * 1000))
+    total += current_time - start
     visualizator.display_map(map, result)
+    start = int(round(time.time() * 1000))
+
+    current_time: int = int(round(time.time() * 1000))
+    total += current_time - start
+
+    print("Time taken : ", total / 1000)
 
 if __name__ == "__main__":
     main()
