@@ -94,12 +94,13 @@ def eulerian_cycle(graph) -> list:
 """
 def remove_multiple_vertices(cycle: list) -> list:
     result : list = []
-    for i in range(1, len(cycle)):
+    for i in range(0, len(cycle)-1):
         if cycle[i] not in result:
             result = result + [cycle[i]]
-    return [cycle[0]] + result
+    return result + [cycle[0]]
 
 
 if __name__ == "__main__":
     # Test odd 
     print(compute_odd_degree_graph([[2], [2], [0, 1, 3, 4], [2], [2]]))
+    print(remove_multiple_vertices([ 1, 2, 3, 1, 4, 5, 1 ]))
