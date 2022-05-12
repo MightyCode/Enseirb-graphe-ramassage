@@ -43,17 +43,18 @@ def angle_depart(start, p3):
         b=-1
     return acos(b)
 
-def distance_between_two_points():
-    pass
-
-def distance_chemin(start, points, chemin):
+def distance_between_two_points(start, points, path):
     d = 0
     for i in range(1, len(points)-1):
-        d += dist(points[chemin[i-1], :], points[chemin[i], :]) + angle2(points[chemin[i-1], :], points[chemin[i], :], 
-                points[chemin[i+1], :])*start["speedAngle"]
-    d += dist(start["position"],points[chemin[0], :]) + angle_depart(start , points[chemin[0], :])*start["speedAngle"]
-    + dist(start["position"], points[chemin[-1], :]) 
-    + dist(points[chemin[-2], :], points[chemin[-1], :])
+        d += dist(points[path[i-1], :], points[path[i], :])
+        d += angle2(points[path[i-1], :], points[path[i], :], points[path[i+1], :]) * start["speedAngle"]
+
+def distance_path_and_start(start, points, path):
+    d = distance_between_two_points(start, points, path)
+
+    d += dist(start["position"],points[path[0], :]) + angle_depart(start , points[path[0], :]) * start["speedAngle"]
+    + dist(start["position"], points[path[-1], :]) 
+    + dist(points[path[-2], :], points[path[-1], :])
 
     return d
 
