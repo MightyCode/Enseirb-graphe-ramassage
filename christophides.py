@@ -1,4 +1,33 @@
+import commerce
+
 def christophides(start: dict, graph: list, points: list, wastes_count: int) -> list:
+    """
+        @return Graph
+    """
+    def compute_minimum_spanning_tree(graph: list) -> list:
+        result : list = []
+        for i in range(len(graph)):
+            result[i] = []
+
+        neighbors : list = graph[0]
+
+        while len(neighbors) > 0:
+            min_distance = -1
+            vSrc = 0
+            vDst = 0
+            for n in neighbors:
+                for v in range(len(result)):
+                    if n in graph[v]:
+                        d = commerce.dist(points[v], points[n])
+                        if min_distance == -1 or min_distance > d:
+                            min_distance = d
+                            vSrc = v
+                            vDst = n
+            result[v] = result[v] + [n]
+            neighbors[n] = graph[n]
+
+        return result
+    
     spanning_tree = compute_minimum_spanning_tree(graph)
 
     odd_graph = compute_odd_degree_graph(spanning_tree)
@@ -11,13 +40,7 @@ def christophides(start: dict, graph: list, points: list, wastes_count: int) -> 
 
     return remove_multiple_vertices(cycle)
 
-"""
-    @return Graph
-"""
-def compute_minimum_spanning_tree(graph: list) -> list:
-    result : list = []
 
-    return result
 
 """
     @return Graph
