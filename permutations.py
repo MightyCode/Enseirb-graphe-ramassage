@@ -45,32 +45,45 @@ def permuteTwoEdges(path: list, i1 : int, i2 : int):
 
 def permuteAlgo(start : dict, points : list, graph: list, LIMIT : int) -> tuple :
     np_points = np.array(points)
-    np_path : list = calculateFirstPath(points)
 
-    #initial length
-    pathLen : int = commerce.distance_path_and_start(start, np_points, np_path)
+    best_path: list = calculateFirstPath(points)
+    best_len: int = commerce.distance_path_and_start(start, np_points, best_path)
+    cmp: int = 0
+    iteration: int = 0
 
-    cmp : int = 0
-    tmp_cmp : int = 0
     start_time: int = int(round(time.time() * 1000))
-    
-    while int(round(time.time() * 1000)) - start_time < LIMIT:
-        for i in range(1, len(np_path) - 2):
-            for j in range(1, len(np_path) - 2):
-                if(j >= i + 2 or j <= i - 2):
-                    newPath = permuteTwoEdges(np_path, i, j)
-                    newPathLength: int = commerce.distance_path_and_start(start, np_points, newPath)
-                    if newPathLength < pathLen and """commerce.possible(newPath, graph)""":
-                        tmp_cmp = tmp_cmp + 1
-                        pathLen = newPathLength
-                        np_path = newPath.copy()
-                    
-        if(tmp_cmp == cmp):
-            return np_path, pathLen, cmp
-        else:
-            cmp = tmp_cmp
+    while iteration < 1000 and int(round(time.time() * 1000)) - start_time < LIMIT:
+        print("                                          ", end="\r")
+        print("Iteration", iteration, best_len, end="\r")
+        np_path: list = calculateFirstPath(points)
+        #initial length
+        pathLen: int = commerce.distance_path_and_start(start, np_points, np_path)
 
-    return np_path, pathLen, cmp
+        if pathLen < best_len and """commerce.possible(newPath, graph)""":
+            best_path = np_path.copy()
+            best_len = pathLen
+
+        local_cmp: int = -1
+        tmp_cmp: int = 0
+        
+        while tmp_cmp != local_cmp:
+            local_cmp = tmp_cmp
+            cmp += tmp_cmp
+
+            for i in range(1, len(np_path) - 2):
+                for j in range(1, len(np_path) - 2):
+                    if(j >= i + 2 or j <= i - 2):
+                        newPath = permuteTwoEdges(np_path, i, j)
+                        newPathLength: int = commerce.distance_path_and_start(start, np_points, newPath)
+
+                        if newPathLength < best_len and """commerce.possible(newPath, graph)""":
+                            tmp_cmp = tmp_cmp + 1
+                            best_len = newPathLength
+                            best_path = newPath.copy()
+                        
+        iteration += 1
+
+    return best_path, best_len, cmp
 
 if __name__ == "__main__":
     points : list = [[0,0],[1,2],[3,1],[6,5],[5,4],[5,8],[6,4],[5,2],[3,9]]  

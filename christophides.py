@@ -72,6 +72,18 @@ def compute_odd_degree_graph(graph: list) -> list:
 
     return result
 
+
+
+def is_saturated(graph, index):
+    return len(graph[index]) > 0
+
+def existsAlternatedGrowingPath(graph):
+    for index in range(len(graph)):
+        if not is_saturated(graph, index):
+            return True
+    
+    return False
+
 """
     @return Graph
 """

@@ -83,8 +83,6 @@ def main():
         path.insert(0, 0)
         path.append(0)
 
-        print(path)
-
     print("Begin end")
 
     result = pmath.path_to_graph(len(almost_complete_graph), path)
