@@ -1,19 +1,19 @@
 import commerce
 
 def christophides(start: dict, graph: list, points: list, wastes_count: int) -> list:
-    print("Start christophides")
-    print("Graph: ", graph)
-    print("Points: ", points)
+    #print("Start christophides")
+    #print("Graph: ", graph)
+    #print("Points: ", points)
     spanning_tree = compute_minimum_spanning_tree(graph, points)
-    print("Spanning tree done\n", spanning_tree)
+    #print("Spanning tree done\n", spanning_tree)
     odd_graph = compute_odd_degree_graph(spanning_tree)
-    print("Odd degree graph done\n", odd_graph)
+    #print("Odd degree graph done\n", odd_graph)
     minimal_coupling_graph = compute_minimal_coupling_graph(odd_graph)
-    print("Minimal coupling graph done\n", minimal_coupling_graph)
+    #print("Minimal coupling graph done\n", minimal_coupling_graph)
     union = union_graph(spanning_tree, minimal_coupling_graph)
-    print("Union graph done\n", union)
+    #print("Union graph done\n", union)
     cycle = eulerian_cycle(union)
-    print("Eulerian cycle path done\n", cycle)
+    #print("Eulerian cycle path done\n", cycle)
 
     return remove_multiple_vertices(cycle)
 
@@ -200,12 +200,14 @@ def union_graph(graph1: list, graph2: list) -> list:
     @return Cycle such as : [ 1, 2, 3, 1, 4, 5, 1 ]
 """
 def eulerian_cycle(graph: list) -> list:
+    #print("Graph: ", graph)
     result : list = []
     explorated : list = []
     for _ in range(len(graph)):
         explorated = explorated + [[]]
 
     def dfs(start: int, result: list):
+        #print("dfs start=",start," result=",result)
         for c in graph[start]:
             if c not in explorated[start]:
                 explorated[start].insert(0, c)
@@ -214,6 +216,8 @@ def eulerian_cycle(graph: list) -> list:
         result.insert(0, start)
 
     dfs(0, result)
+    result = result + [0]
+    #print("result=",result)
 
     return result
 
