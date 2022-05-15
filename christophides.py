@@ -2,16 +2,18 @@ import commerce
 
 def christophides(start: dict, graph: list, points: list, wastes_count: int) -> list:
     print("Start christophides")
+    print("Graph: ", graph)
+    print("Points: ", points)
     spanning_tree = compute_minimum_spanning_tree(graph, points)
-    print("Spanning tree done")
+    print("Spanning tree done\n", spanning_tree)
     odd_graph = compute_odd_degree_graph(spanning_tree)
-    print("Odd degree graph done")
+    print("Odd degree graph done\n", odd_graph)
     minimal_coupling_graph = compute_minimal_coupling_graph(odd_graph)
-    print("Minimal coupling graph done")
+    print("Minimal coupling graph done\n", minimal_coupling_graph)
     union = union_graph(spanning_tree, minimal_coupling_graph)
-    print("Union graph done")
+    print("Union graph done\n", union)
     cycle = eulerian_cycle(union)
-    print("Eulerian cycle path done")
+    print("Eulerian cycle path done\n", cycle)
 
     return remove_multiple_vertices(cycle)
 
@@ -32,9 +34,9 @@ def compute_minimum_spanning_tree(graph: list, points: list) -> list:
         vSrc = 0
         vDst = 0
         for n in neighbors:
-            for v in range(len(result)):
+            for v in range(len(in_zone)):
                 if n in graph[v]:
-                    d = commerce.dist(points[v], points[n])
+                    d = commerce.dist(points[in_zone[v]], points[n])
                     if min_distance == -1 or min_distance > d:
                         min_distance = d
                         vSrc = v
@@ -186,13 +188,14 @@ def union_graph(graph1: list, graph2: list) -> list:
     for i in range(len(graph1)):
         result.append(graph1[i].copy())
         result[i].extend(graph2[i].copy())
+        #result[i] = list(result[i]) # This is maybe better
         result[i] = list(set(result[i]))
         result[i].sort()
 
     return result
 
 """
-    @parap Graph
+    @param Graph
 
     @return Cycle such as : [ 1, 2, 3, 1, 4, 5, 1 ]
 """
@@ -249,7 +252,7 @@ if __name__ == "__main__":
 
     print("Minimal Coupling Graph: ", compute_minimal_coupling_graph(compute_odd_degree_graph([[2], [2], [0, 1, 3, 4], [2], [2]])))
 
-    print("\nTest with complete graph with 4 vertices")
+    print("\nTest with complete graph with 5 vertices")
 
     spanning_tree: list = compute_minimum_spanning_tree(graph, points)
     print(spanning_tree)
