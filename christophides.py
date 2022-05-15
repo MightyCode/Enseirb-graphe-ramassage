@@ -1,4 +1,3 @@
-from os import stat
 import commerce
 
 def christophides(start: dict, graph: list, points: list, wastes_count: int) -> list:
@@ -77,34 +76,34 @@ def compute_odd_degree_graph(graph: list) -> list:
 """
 def compute_minimal_coupling_graph(graph: list) -> list:
     result : list = []
+    for _ in range(len(graph)):
+        result = result + [[]]
+
     while True:
         b, w = find_augmenting_path(graph, result) 
         if not b:
             return result
-        result = symmetric_difference(result, w)
+        result = symmetric_difference(result, path_to_graph(graph, w))
 
 
-def is_saturated(graph, index):
-    return len(graph[index]) > 0
+def is_saturated(matching, index):
+    return len(matching[index]) > 0
 
 """
     @return (bool, Graph)
 """
 def find_augmenting_path(g: list, matching: list) -> tuple:
-    result : list = []
-    for _ in range(len(g)):
-        result = result + [[]]
-
     not_saturated : list = []
     for i in range(len(g)):
-        if not is_saturated(g, i):
+        if not is_saturated(matching, i):
             not_saturated = not_saturated + [i]
 
-    i = 0
-    while i < len(not_saturated) - 2:
-        b, p = find_augmenting_path_between_2_vertices(g, matching, i, i+1)
-        if b:
-            return (b, p)
+    for i in range(len(not_saturated)):
+        for j in range(len(not_saturated)):
+            if i != j:
+                b, p = find_augmenting_path_between_2_vertices(g, matching, not_saturated[i], not_saturated[j])
+                if b:
+                    return (b, p)
 
     return (False, [])
 
@@ -112,11 +111,41 @@ def find_augmenting_path(g: list, matching: list) -> tuple:
     @return (bool, Graph)
 """
 def find_augmenting_path_between_2_vertices(graph: list, coupling: list, v1: int, v2: int) -> tuple:
-    result : list = []
+    result : list = [v1]
     currentVertex = v1
-    #while currentVertex != v2:
+    i = 0
+    needEdgeInCoupling = False
+    while currentVertex != v2:
+        if i >= len(graph):
+            if currentVertex == v1:
+                return (False, [])
+            i = currentVertex + 1
+            result = result[:-1]
+            currentVertex = result[len(result)-1]
+            needEdgeInCoupling = not needEdgeInCoupling
+        elif i not in result and i != currentVertex and i in graph[currentVertex] and (needEdgeInCoupling == (i in coupling[currentVertex])):
+            result = result + [i]
+            needEdgeInCoupling = not needEdgeInCoupling
+            currentVertex = i
+            i = 0
+        else:
+            i = i + 1
 
     return (True, result)
+
+"""
+    @return Graph
+"""
+def path_to_graph(original_graph: list, path: list) -> list:
+    result : list = []
+    for _ in range(len(original_graph)):
+        result = result + [[]]
+
+    for i in range(len(path)-1):
+        result[path[i]].append(path[i+1])
+        result[path[i+1]].append(path[i])
+
+    return result
 
 
 """
@@ -211,3 +240,7 @@ if __name__ == "__main__":
     print("Multiple vertices: ", remove_multiple_vertices(eulerian_cycle([[1, 2, 3, 4], [0, 2], [0, 1], [0, 4], [0, 3]])))
 
     print("Symmetric Difference: ", symmetric_difference([[3, 1], [0, 2], [1], [0]], [[3, 2], [3], [0], [0, 1]]))
+
+    print("Find Augmenting Path: ", find_augmenting_path(compute_odd_degree_graph([[2], [2], [0, 1, 3, 4], [2], [2]]), [[], [], [], [], []]))
+
+    print("Minimal Coupling Graph: ", compute_minimal_coupling_graph(compute_odd_degree_graph([[2], [2], [0, 1, 3, 4], [2], [2]])))
