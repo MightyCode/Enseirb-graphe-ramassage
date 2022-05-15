@@ -1,9 +1,11 @@
+from turtle import pos
 import generate
 import loading
 import visualizator
 import argumentParser as ag 
 import commerce
 import permutations
+import christophides
 import pmath
 
 import random
@@ -55,10 +57,10 @@ def main():
     visualizator.display_map(map, almost_complete_graph, "Affichage du graphe des chemins possibles")
     start = int(round(time.time() * 1000))
 
-    algorithm: int = 1
+    algorithm: int = 3
     if args.algorithm:
         algorithm = args.algorithm[0]
-        if algorithm < 0 or algorithm > 2:
+        if algorithm < 0 or algorithm > 3:
             print("Algorithm index invalide, please choose between 1 and 2 (included)")
             return 
 
@@ -82,6 +84,10 @@ def main():
 
         path.insert(0, 0)
         path.append(0)
+
+    if algorithm == 3:
+        position.insert(0, map["robot"]["position"])
+        path = christophides.christophides(map["robot"], almost_complete_graph, position, 0)
 
     print("Begin end")
 

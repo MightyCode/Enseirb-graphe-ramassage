@@ -1,16 +1,17 @@
 import commerce
 
 def christophides(start: dict, graph: list, points: list, wastes_count: int) -> list:
-    
+    print("Start christophides")
     spanning_tree = compute_minimum_spanning_tree(graph, points)
-
+    print("Spanning tree done")
     odd_graph = compute_odd_degree_graph(spanning_tree)
-
+    print("Odd degree graph done")
     minimal_coupling_graph = compute_minimal_coupling_graph(odd_graph)
-
+    print("Minimal coupling graph done")
     union = union_graph(spanning_tree, minimal_coupling_graph)
-
+    print("Union graph done")
     cycle = eulerian_cycle(union)
+    print("Eulerian cycle path done")
 
     return remove_multiple_vertices(cycle)
 
@@ -227,8 +228,10 @@ def remove_multiple_vertices(cycle: list) -> list:
 
 
 if __name__ == "__main__":
-    points = [ [0,0], [0,1], [3,0], [0,-2] ]
-    graph = [[1, 2, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2]]
+    points = [[0.5, 0.5], [0, 0], [1, 0], [0, 1], [1, 1]]
+    graph = [[1, 2, 3, 4], [0, 2, 3, 4], [0, 1, 3, 4], [0, 1, 2, 4], [0, 1, 2, 3]]
+
+    print("Local tests")
 
     print("Minimum Spanning Tree: ", compute_minimum_spanning_tree(graph, points))
     
@@ -245,4 +248,26 @@ if __name__ == "__main__":
     print("Find Augmenting Path: ", find_augmenting_path(compute_odd_degree_graph([[2], [2], [0, 1, 3, 4], [2], [2]]), [[], [], [], [], []]))
 
     print("Minimal Coupling Graph: ", compute_minimal_coupling_graph(compute_odd_degree_graph([[2], [2], [0, 1, 3, 4], [2], [2]])))
+
+    print("\nTest with complete graph with 4 vertices")
+
+    spanning_tree: list = compute_minimum_spanning_tree(graph, points)
+    print(spanning_tree)
+
+    odd_graph: list = compute_odd_degree_graph(spanning_tree)
+    print(spanning_tree)
+
+    minimal_coupling_graph: list = compute_minimal_coupling_graph(odd_graph)
+    print(minimal_coupling_graph)
+
+    union: list = union_graph(spanning_tree, minimal_coupling_graph)
+    print(union)
+
+    cycle: list = eulerian_cycle(union)
+    print(cycle)
+
+    without_mutiple: list = remove_multiple_vertices(cycle)
+    print(without_mutiple)
+
+
 
