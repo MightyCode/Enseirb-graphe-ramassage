@@ -72,28 +72,52 @@ def compute_odd_degree_graph(graph: list) -> list:
 
     return result
 
-
-
-def is_saturated(graph, index):
-    return len(graph[index]) > 0
-
-def existsAlternatedGrowingPath(graph):
-    for index in range(len(graph)):
-        if not is_saturated(graph, index):
-            return True
-    
-    return False
-
 """
     @return Graph
 """
 def compute_minimal_coupling_graph(graph: list) -> list:
     result : list = []
     while True:
-        b, w = foo(graph) 
+        b, w = find_augmenting_path(graph, result) 
         if not b:
             return result
         result = symmetric_difference(result, w)
+
+
+def is_saturated(graph, index):
+    return len(graph[index]) > 0
+
+"""
+    @return (bool, Graph)
+"""
+def find_augmenting_path(g: list, matching: list) -> tuple:
+    result : list = []
+    for _ in range(len(g)):
+        result = result + [[]]
+
+    not_saturated : list = []
+    for i in range(len(g)):
+        if not is_saturated(g, i):
+            not_saturated = not_saturated + [i]
+
+    i = 0
+    while i < len(not_saturated) - 2:
+        b, p = find_augmenting_path_between_2_vertices(g, matching, i, i+1)
+        if b:
+            return (b, p)
+
+    return (False, [])
+
+"""
+    @return (bool, Graph)
+"""
+def find_augmenting_path_between_2_vertices(graph: list, coupling: list, v1: int, v2: int) -> tuple:
+    result : list = []
+    currentVertex = v1
+    #while currentVertex != v2:
+
+    return (True, result)
+
 
 """
     @return Graph
@@ -115,8 +139,13 @@ def symmetric_difference(g1: list, g2 : list) -> list:
 
     return result
 
-def foo():
-    return 0
+"""
+def existsAlternatedGrowingPath(graph):
+    for index in range(len(graph)):
+        if not is_saturated(graph, index):
+            return True
+    return False
+"""
 
 """
     @return Graph
