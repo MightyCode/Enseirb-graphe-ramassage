@@ -77,7 +77,31 @@ def compute_odd_degree_graph(graph: list) -> list:
 """
 def compute_minimal_coupling_graph(graph: list) -> list:
     result : list = []
+    while True:
+        b, w = foo(graph) 
+        if not b:
+            return result
+        result = symmetric_difference(result, w)
+
+def symmetric_difference(g1: list, g2 : list) -> list:
+    result : list = []
+    for _ in range(len(g1)):
+        result = result + [[]]
+
+    for i in range(0, len(g1)):
+        for j in range(0, len(g1[i])):                
+            if g1[i][j] not in g2[i]:
+                result[i].append(g1[i][j])
+
+    for i in range(0, len(g2)):
+        for j in range(0, len(g2[i])):                
+            if g2[i][j] not in g1[i]:
+                result[i].append(g2[i][j])
+
     return result
+
+def foo():
+    return 0
 
 """
     @return Graph
@@ -141,3 +165,5 @@ if __name__ == "__main__":
     print("Eulerian Cycle: ", eulerian_cycle([[1, 2, 3, 4], [0, 2], [0, 1], [0, 4], [0, 3]]))
 
     print("Multiple vertices: ", remove_multiple_vertices(eulerian_cycle([[1, 2, 3, 4], [0, 2], [0, 1], [0, 4], [0, 3]])))
+
+    print("Symmetric Difference: ", symmetric_difference([[3, 1], [0, 2], [1], [0]], [[3, 2], [3], [0], [0, 1]]))
