@@ -95,6 +95,9 @@ def compute_minimal_coupling_graph(graph: list) -> list:
             return result
         result = symmetric_difference(result, w)
 
+"""
+    @return Graph
+"""
 def symmetric_difference(g1: list, g2 : list) -> list:
     result : list = []
     for _ in range(len(g1)):
