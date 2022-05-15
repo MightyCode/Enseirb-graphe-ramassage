@@ -228,8 +228,9 @@ def remove_multiple_vertices(cycle: list) -> list:
 
 if __name__ == "__main__":
     points = [ [0,0], [0,1], [3,0], [0,-2] ]
+    graph = [[1, 2, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2]]
 
-    print("Minimum Spanning Tree: ", compute_minimum_spanning_tree([[1, 2, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2]], points))
+    print("Minimum Spanning Tree: ", compute_minimum_spanning_tree(graph, points))
     
     print("Odd degree: ", compute_odd_degree_graph([[2], [2], [0, 1, 3, 4], [2], [2]]))
 
@@ -244,3 +245,4 @@ if __name__ == "__main__":
     print("Find Augmenting Path: ", find_augmenting_path(compute_odd_degree_graph([[2], [2], [0, 1, 3, 4], [2], [2]]), [[], [], [], [], []]))
 
     print("Minimal Coupling Graph: ", compute_minimal_coupling_graph(compute_odd_degree_graph([[2], [2], [0, 1, 3, 4], [2], [2]])))
+
