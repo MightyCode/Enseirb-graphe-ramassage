@@ -1,34 +1,56 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from itertools import permutations
-from math import sqrt,acos
+from math import sqrt, acos
 import time
  
-def Sqr(a):
-    return a*a
+"""
+Make a power of a
+"""
+def Sqr(a: float) -> float:
+    return a * a
 
 
-def dist(p1, p2):
+"""
+Compute the distance between two points
+p1: Point 1
+p2: Point 2
+"""
+def dist(p1: list, p2: list) -> float:
     return ((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2) ** 0.5
 
-def angle(p1, p2, p3):
-    b=(dist(p1, p2) ** 2 + dist(p1, p3) ** 2 - dist(p3, p2) ** 2) / (2*dist(p1, p2)*dist(p2, p3))
-    if (b>1):
-        b=1
+"""
+Compute the angle using three points
+"""
+def angle(p1: list, p2: list, p3: list) -> float:
+    b: float = (dist(p1, p2) ** 2 + dist(p1, p3) ** 2 - dist(p3, p2) ** 2) / (2*dist(p1, p2)*dist(p2, p3))
+    
+    if (b > 1):
+        b = 1
+
     return acos(b)
 
 
-def angle2(p1, p2, p3):
-    b = ((p1[0] - p2[0]) * (p2[0] - p3[0]) + (p1[1] - p2[1]) * (p2[1] - p3[1])) / (sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2) * sqrt((p2[0] - p3[0]) ** 2 + (p2[1] - p3[1]) ** 2))
-    if (b>1):
-        b=1
-    if (b<-1):
-        b=-1
+"""
+Compute the angle using three points
+"""
+def angle2(p1: list, p2: list, p3: list) -> float:
+    b: float = ((p1[0] - p2[0]) * (p2[0] - p3[0]) + (p1[1] - p2[1]) * (p2[1] - p3[1])) \
+        / (sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2) * sqrt((p2[0] - p3[0]) ** 2 + (p2[1] - p3[1]) ** 2))
+    if (b > 1):
+        b = 1
+    if (b < -1):
+        b = -1
     return acos(b)
 
-def angle_depart(start, p3):
-    angle = start["angle"]
-    pos = start["position"]
+"""
+Compute the angle between the robot initial position and angle and another point
+start: robot information
+p3: Point 3
+"""
+def angle_start(start: dict, p3: list):
+    angle: float = start["angle"]
+    pos: list = start["position"]
 
     if pos[0] == p3[0] and pos[1] == p3[1]:
         return 0
@@ -43,7 +65,10 @@ def angle_depart(start, p3):
 
     return acos(b)
 
-def distance_between_two_points(start, points, path):
+"""
+Compute the cost of traveling between two points given a speedAngle
+"""
+def distance_between_two_points(start: dict, points: list, path: list) -> float:
     d = 0
     for i in range(1, len(points)-1):
         d += dist(points[path[i-1], :], points[path[i], :])
@@ -51,16 +76,22 @@ def distance_between_two_points(start, points, path):
 
     return d
 
-def distance_path_and_start(start, points, path):
+"""
+Compute the cost of a path given a list of points and a start
+"""
+def distance_path_and_start(start: dict, points: list, path: list) -> float:
     d = distance_between_two_points(start, points, path)
 
-    d += dist(start["position"],points[path[0], :]) + angle_depart(start, points[path[0], :]) * start["speedAngle"]
+    d += dist(start["position"],points[path[0], :]) + angle_start(start, points[path[0], :]) * start["speedAngle"]
     + dist(start["position"], points[path[-1], :]) 
     + dist(points[path[-2], :], points[path[-1], :])
 
     return d
 
 
+"""
+Test plot points
+"""
 def plot_points(points, chemin):
     fig, ax = plt.subplots(1, 2, figsize=(8, 4))
 
@@ -72,13 +103,23 @@ def plot_points(points, chemin):
     ax[1].set_title("dist=%1.2f" % distance_path_and_start(points, chemin))
     return ax
 
-def possible(permutation, graphe):
+"""
+Indicate if a path is possible given a graph
+permutation: The path
+graph: Reference graph
+"""
+def possible(permutation: tuple, graph: list):
     for i in range(len(permutation) - 1):
-        if permutation[i + 1] not in graphe[permutation[i]]:
+        if permutation[i + 1] not in graph[permutation[i]]:
             return False
 
     return True
 
+"""
+Complete a path if is not possible to go from a to b given liaisons (which indicates how go from a to b)
+path: Path
+liaison: list of path to go from each a to each b
+"""
 def completePath(path, liaisons):
     i: int = 0
     while i < len(path) - 1:
@@ -95,6 +136,11 @@ def completePath(path, liaisons):
 
         i += len(liaison) + 1
 
+
+"""
+Experimental | Not implemented | 
+Compute a path from each a to b in a given graph
+"""
 def compute_paths(start: dict, points: list, graph: list, wastes_count: int) -> list:
     def find_best_path(src: int, dst: int) -> list:
         result: list = []
@@ -119,7 +165,17 @@ def path_including_start(path: list) -> list:
 
     return result
 
-def optimisation(start, points, graph, numberWastes, limit) -> list:
+
+"""
+Using the brut force technic compute the most efficient path to visit each wastes
+start: robot information
+points: position of vertices (wastes + corner of obstacles)
+graph: original graph
+numberWastes: Number of wastes
+limit: limit of time in second
+
+"""
+def optimisation(start: dict, points: list, graph: list, numberWastes: int, limit: int) -> list:
     dist = None
     best = None
 

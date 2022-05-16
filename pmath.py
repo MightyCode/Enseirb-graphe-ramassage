@@ -1,6 +1,10 @@
 import copy
 
-
+"""
+Check if line collide anoter line
+x1, y1, x2, y2 : First line
+x3, y3, x4, y4 : Second line
+"""
 def isLineCollidesLine(x1, y1, x2, y2, x3, y3, x4, y4) -> bool:
     denominator: float = ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1))
     numerator1: float = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3))
@@ -16,6 +20,7 @@ def isLineCollidesLine(x1, y1, x2, y2, x3, y3, x4, y4) -> bool:
     return (0 <= r <= 1) and (0 <= s <= 1)
 
 """
+Indicates if a rectangle collides a line
 line : [x1, y1, x2, y2]
 rectangle [x1, y1, x2, y2]
 """
@@ -38,6 +43,11 @@ def rectangleCollidesLine(line: list, rectangle: list) -> bool:
 
     return  False
 
+"""
+Recturn position of a certain corners of an obstacle
+dict: the obstacle
+choosenCorner: 1 left-up, 2 right-up, 3 right-down, 4 left-down
+"""
 def computeRectangleCorner(obstacle: dict, chosenCorner: int):
     """result: list = copy.copy(obstacle["position"])
 
@@ -61,9 +71,19 @@ def computeRectangleCorner(obstacle: dict, chosenCorner: int):
     if chosenCorner == 3:
         return [obstacle["position"][0] - 0.001, obstacle["position"][1] + obstacle["size"][1] + 0.001]
 
+"""
+Return the number of vertices of a certain map
+map: the map
+"""
 def getNumberVertex(map: dict):
     return len(map["wastes"]) + 1 + 4 * len(map["obstacles"])
 
+"""
+Return the position of a certain vextex
+vextex 0 (or 1 in math) corresponds to the robot position
+// between 1 and number_wastes, to the (i-1)-wastes
+and after number_wastes, an obstacles's corner
+"""
 def getPosition(map: dict, vertex: int) -> list:
     if vertex == 0:
         return map["robot"]["position"]
@@ -77,6 +97,11 @@ def getPosition(map: dict, vertex: int) -> list:
 
     return computeRectangleCorner(map["obstacles"][start // 4], start % 4)
 
+"""
+Transform a path to a graph given a number of vertices
+numberPoint: Number of vertices
+path: list of visited vertices
+"""
 def path_to_graph(numberPoint, path):
     result: list = []
     for i in range(numberPoint):
