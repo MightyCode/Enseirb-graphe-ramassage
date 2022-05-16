@@ -3,6 +3,12 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import pmath
 
+"""
+Display a map and a graph using mathplotlib
+map: Where with robot positions, wastes saved
+graph: Connection betwenn points
+name_plot: name displayed on the figure
+"""
 def display_map(map: dict, graph: list=[], name_plot="") -> None:
     min: list = [None, None]
     max: list = [None, None]
