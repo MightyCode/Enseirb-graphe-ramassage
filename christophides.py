@@ -1,19 +1,20 @@
 import commerce
 
 def christophides(start: dict, graph: list, points: list, wastes_count: int) -> list:
+    #print(points)
     #print("Start christophides")
     #print("Graph: ", graph)
     #print("Points: ", points)
     spanning_tree = compute_minimum_spanning_tree(graph, points)
-    #print("Spanning tree done\n", spanning_tree)
+    print("Spanning tree done\n", spanning_tree)
     odd_graph = compute_odd_degree_graph(spanning_tree)
-    #print("Odd degree graph done\n", odd_graph)
+    print("Odd degree graph done\n", odd_graph)
     minimal_coupling_graph = compute_minimal_coupling_graph(odd_graph)
-    #print("Minimal coupling graph done\n", minimal_coupling_graph)
+    print("Minimal coupling graph done\n", minimal_coupling_graph)
     union = union_graph(spanning_tree, minimal_coupling_graph)
-    #print("Union graph done\n", union)
+    print("Union graph done\n", union)
     cycle = eulerian_cycle(union)
-    #print("Eulerian cycle path done\n", cycle)
+    print("Eulerian cycle path done\n", cycle)
 
     return remove_multiple_vertices(cycle)
 
@@ -33,14 +34,14 @@ def compute_minimum_spanning_tree(graph: list, points: list) -> list:
         min_distance = -1
         vSrc = 0
         vDst = 0
-        for n in neighbors:
+        for n in range(len(neighbors)):
             for v in range(len(in_zone)):
                 if n in graph[v]:
-                    d = commerce.dist(points[in_zone[v]], points[n])
+                    d = commerce.dist(points[in_zone[v]], points[neighbors[n]])
                     if min_distance == -1 or min_distance > d:
                         min_distance = d
-                        vSrc = v
-                        vDst = n
+                        vSrc = in_zone[v]
+                        vDst = neighbors[n]
         result[vSrc] = result[vSrc] + [vDst]
         result[vDst] = result[vDst] + [vSrc]
         in_zone = in_zone + [vDst]
@@ -188,8 +189,8 @@ def union_graph(graph1: list, graph2: list) -> list:
     for i in range(len(graph1)):
         result.append(graph1[i].copy())
         result[i].extend(graph2[i].copy())
-        #result[i] = list(result[i]) # This is maybe better
-        result[i] = list(set(result[i]))
+        result[i] = list(result[i]) # This is maybe better
+        #result[i] = list(set(result[i]))
         result[i].sort()
 
     return result

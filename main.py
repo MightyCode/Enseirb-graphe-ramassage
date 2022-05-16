@@ -1,4 +1,3 @@
-from turtle import pos
 import generate
 import loading
 import visualizator
@@ -97,6 +96,7 @@ def main():
         path = christophides.christophides(map["robot"], almost_complete_graph, position, 0)
 
     print("Begin end")
+    print(path)
 
     result = pmath.path_to_graph(len(almost_complete_graph), path)
 
