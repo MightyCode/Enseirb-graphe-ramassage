@@ -73,17 +73,24 @@ def main():
 
     print("Begin algo")
 
-    if algorithm == 1:
-        path = commerce.optimisation(map["robot"], np.array(position), almost_complete_graph, len(map["wastes"]), limit_time - total)
+    name = "Affichage du chemin trouvée"
 
+    if algorithm == 1:
+        result: list = commerce.optimisation(map["robot"], np.array(position), almost_complete_graph, len(map["wastes"]), limit_time - total)
+        path: list = result[0]
+
+        name += " : coût " + str(result[1])
     if algorithm == 2:
-        path = permutations.permuteAlgo(map["robot"], position, almost_complete_graph, limit_time - total)[0]
+        result: list = permutations.permuteAlgo(map["robot"], position, almost_complete_graph, limit_time - total)
+        path: list = result[0]
         
         for i in range(len(path)):
             path[i] += 1
 
         path.insert(0, 0)
         path.append(0)
+
+        name += " : coût " + str(result[1])
 
     if algorithm == 3:
         position.insert(0, map["robot"]["position"])
@@ -95,7 +102,7 @@ def main():
 
     current_time: int = int(round(time.time() * 1000))
     total += current_time - start
-    visualizator.display_map(map, result, "Affichage du chemin trouvées")
+    visualizator.display_map(map, result, name)
     start = int(round(time.time() * 1000))
 
     current_time: int = int(round(time.time() * 1000))
