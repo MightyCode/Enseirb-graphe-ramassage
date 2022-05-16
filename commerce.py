@@ -181,12 +181,12 @@ def optimisation(start: dict, points: list, graph: list, numberWastes: int, limi
 
     #Precaculs
     graph_without_robot = graph[1:]
-    paths: dict = compute_paths(start, points, graph_without_robot, numberWastes)
+    #laisons: dict = compute_paths(start, points, graph_without_robot, numberWastes) # Abandoned | Experimental
 
     start_time: int = int(round(time.time() * 1000))
 
     for p in permutations(range(len(points))):
-        #completePath(p, paths)
+        #completePath(p, laisons)
 
         true_path = path_including_start(p)
         if not possible(true_path, graph):
@@ -204,7 +204,7 @@ def optimisation(start: dict, points: list, graph: list, numberWastes: int, limi
     if best == None:
         return []
 
-    return path_including_start(best)
+    return path_including_start(best), dist
 
 if __name__ == "__main__":
     paths = [
