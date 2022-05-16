@@ -95,7 +95,7 @@ def main():
 
     current_time: int = int(round(time.time() * 1000))
     total += current_time - start
-    visualizator.display_map(map, result, "Affichage du chemins possibles")
+    visualizator.display_map(map, result, "Affichage du chemin trouvées")
     start = int(round(time.time() * 1000))
 
     current_time: int = int(round(time.time() * 1000))
