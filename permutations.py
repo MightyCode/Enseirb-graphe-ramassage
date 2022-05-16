@@ -4,6 +4,7 @@ import numpy as np
 import random
 import time
 
+# computes a random path using a set of points. Concretly, it shuffles the points list
 def calculateFirstPath(points : list) -> list:
     path : list = []
 
@@ -13,7 +14,8 @@ def calculateFirstPath(points : list) -> list:
     random.shuffle(path)
     return path
 
-# swap two points in a list : points[i] become points[j] and points[j] become points[j]
+# swaps two edges
+# the edge (path[i],path[i+1]) is swapped with the edge (path[j],path[j+1])
 # PRECOND : i,j should be in ]0,len(points)-2[
 
 def permuteTwoEdges(path: list, i1 : int, i2 : int):
@@ -43,6 +45,15 @@ def permuteTwoEdges(path: list, i1 : int, i2 : int):
     else:
         print("indexes are not between 0 and len(points)-2")
 
+# the 2-opt algorithm
+# @param start : dict | the starting point of the robot
+# @param points : list | wastes list
+# @param graph : list | the graph describing the relations between every vertices
+# @param LIMIT : int | a time limit. The algorithm will stop if this limit is reached
+
+# @return best_path : list | the path founded by the algorithm
+# @return best_len : float | the cost of the founded path
+# @return length : list | a list describing the cost of the path at every permutations that reduces the cost
 def permuteAlgo(start : dict, points : list, graph: list, LIMIT : int) -> tuple :
     np_points = np.array(points)
 
