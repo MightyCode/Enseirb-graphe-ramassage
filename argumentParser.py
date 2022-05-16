@@ -1,6 +1,8 @@
 import argparse
 
-
+"""
+Parse argument
+"""
 def giveArgsAndParser():
     parser = argparse.ArgumentParser(description="Graph project - Waste collector")
 

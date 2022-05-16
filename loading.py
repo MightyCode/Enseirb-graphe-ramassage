@@ -1,5 +1,8 @@
 import pmath
 
+"""
+Return a dictionnary containing a template of robot data
+"""
 def return_template_robot() -> dict:
     return {
         "position" : [0, 0],
@@ -8,17 +11,28 @@ def return_template_robot() -> dict:
     }
 
 
+"""
+Return a dictionnary containing a template of wastes
+"""
 def return_template_waste() -> dict:
     return {
         "position" : [0, 0]
     }
 
+
+"""
+Return a dictionnary containing a template of obstacle
+"""
 def return_template_obstacle() -> dict:
     return  {
         "position" : [0, 0],
         "size" : [0, 0]
     }
 
+
+"""
+Return a dictionnary containing a template of map
+"""
 def return_template_map() -> dict:
     return {
         "robot" : return_template_robot(),
