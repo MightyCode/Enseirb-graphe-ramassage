@@ -54,7 +54,9 @@ def compute_minimum_spanning_tree(graph: list, points: list) -> list:
     return result
 
 """
-    @return Graph
+Given a graph, compute all vertices with odd degree and create a new complete graph with it
+graph: Entry graph
+return a complete graph
 """
 def compute_odd_degree_graph(graph: list) -> list:
     result : list = []
@@ -90,6 +92,9 @@ def compute_minimal_coupling_graph(graph: list) -> list:
         result = symmetric_difference(result, path_to_graph(graph, w))
 
 
+"""
+Indicate for the coupling part, if a vertex is saturated
+"""
 def is_saturated(matching, index):
     return len(matching[index]) > 0
 
@@ -137,9 +142,7 @@ def find_augmenting_path_between_2_vertices(graph: list, coupling: list, v1: int
 
     return (True, result)
 
-"""
-    @return Graph
-"""
+
 def path_to_graph(original_graph: list, path: list) -> list:
     result : list = []
     for _ in range(len(original_graph)):
@@ -181,7 +184,8 @@ def existsAlternatedGrowingPath(graph):
 """
 
 """
-    @return Graph
+Make the union of two graphs
+Multiple edge can be possible
 """
 def union_graph(graph1: list, graph2: list) -> list:
     result : list = []
