@@ -48,15 +48,17 @@ def permuteAlgo(start : dict, points : list, graph: list, LIMIT : int) -> tuple 
 
     best_path: list = calculateFirstPath(points)
     best_len: int = commerce.distance_path_and_start(start, np_points, best_path)
-    cmp: int = 0
+
     iteration: int = 0
+
+    lengths : list = []
 
     start_time: int = int(round(time.time() * 1000))
     while iteration < 1000 and int(round(time.time() * 1000)) - start_time < LIMIT:
         print("                                          ", end="\r")
         print("Iteration", iteration, best_len, end="\r")
+        lengths.append(best_len)
         np_path: list = calculateFirstPath(points)
-        #initial length
         pathLen: int = commerce.distance_path_and_start(start, np_points, np_path)
 
         if pathLen < best_len and """commerce.possible(newPath, graph)""":
@@ -68,7 +70,7 @@ def permuteAlgo(start : dict, points : list, graph: list, LIMIT : int) -> tuple 
         
         while tmp_cmp != local_cmp:
             local_cmp = tmp_cmp
-            cmp += tmp_cmp
+            
 
             for i in range(1, len(np_path) - 2):
                 for j in range(1, len(np_path) - 2):
@@ -80,11 +82,11 @@ def permuteAlgo(start : dict, points : list, graph: list, LIMIT : int) -> tuple 
                             tmp_cmp = tmp_cmp + 1
                             best_len = newPathLength
                             best_path = newPath.copy()
+                            lengths.append(best_len)
                         
         iteration += 1
 
-    return best_path, best_len, cmp
-
+    return best_path, best_len, lengths
 if __name__ == "__main__":
     points : list = [[0,0],[1,2],[3,1],[6,5],[5,4],[5,8],[6,4],[5,2],[3,9]]  
 
